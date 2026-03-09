@@ -484,7 +484,7 @@
 <div class="option-nav">
   <button class="option-btn active" onclick="show('s1')">Step 1 — Spec with AI Chat</button>
   <button class="option-btn" onclick="show('s2')">Step 2 — Generate Implementation Plan</button>
-  <button class="option-btn" onclick="show('s3')">Step 3 — Development in Progress</button>
+  <button class="option-btn" onclick="show('s3')">Step 3 — Start Development</button>
   <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-toggle-btn">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" id="theme-icon-dark" style="display:none;"><path d="M8 12a4 4 0 110-8 4 4 0 010 8zm0-1.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm5.657-8.157a.75.75 0 010 1.06l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657 5.657a.75.75 0 01-1.06 0l-1.061-1.06a.75.75 0 111.06-1.061l1.061 1.06a.75.75 0 010 1.061zm-9.193-9.193a.75.75 0 01-1.06 0L2.343 3.404a.75.75 0 111.06-1.06l1.061 1.06a.75.75 0 010 1.06zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13z"/></svg>
     <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" id="theme-icon-light"><path d="M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z"/></svg>
@@ -948,7 +948,7 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
-<!-- STEP 3: Development in Progress — Agent Working         -->
+<!-- STEP 3: Start Development                               -->
 <!-- ═══════════════════════════════════════════════════════ -->
 <div class="mockup-section" id="section-s3">
 
@@ -1088,16 +1088,12 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
       </div>
     </div>
 
-    <!-- Right sidebar: Development Status -->
+    <!-- Right sidebar: Start Development -->
     <div class="bg-page" style="">
       <div class="sidebar-fields">
         <div class="sidebar-field">
           <div class="sidebar-field-label">Assignees</div>
-          <div class="sidebar-field-value">
-            <div class="copilot-avatar" style="width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;">C</div>
-            <span class="t-blue" style="">copilot</span>
-            <span class="badge-blue" style="font-size:11px;padding:2px 6px;border-radius:8px;">agent</span>
-          </div>
+          <div class="sidebar-field-value" class="t-muted" style="">None yet</div>
         </div>
         <div class="sidebar-field">
           <div class="sidebar-field-label">Labels</div>
@@ -1116,102 +1112,26 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
         </div>
       </div>
 
-      <!-- Development section in sidebar -->
-      <div class="sidebar-fields">
+      <!-- Start Development -->
+      <div class="sidebar-fields" style="border-bottom:none;">
         <div class="sidebar-field">
           <div class="sidebar-field-label" style="display:flex;align-items:center;gap:6px;">
-            Development
-            <span class="badge-blue" style="font-size:10px;padding:1px 6px;border-radius:8px;">
-              <span class="progress-dot-active" style="display:inline-block;width:4px;height:4px;border-radius:50%;animation:pulse 1.5s infinite;vertical-align:middle;margin-right:3px;"></span>
-              Active
-            </span>
+            Start Development
           </div>
-        </div>
-        <div class="sidebar-field">
-          <div class="sidebar-field-label">Mode</div>
-          <div class="sidebar-field-value" style="font-size:12px;">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="#4493f8"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
-            Cloud coding agent
-          </div>
-        </div>
-        <div class="sidebar-field">
-          <div class="sidebar-field-label">Branch</div>
-          <div class="sidebar-field-value"><code class="t-primary" style="font-size:11px;">copilot/1079-expand-collapse-all</code></div>
-        </div>
-        <div class="sidebar-field">
-          <div class="sidebar-field-label">Plan Progress</div>
-          <div style="margin-top:6px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-              <div class="progress-track" style="flex:1;height:6px;border-radius:3px;overflow:hidden;">
-                <div style="width:50%;height:100%;background:linear-gradient(90deg,var(--green) 80%,var(--blue) 100%);border-radius:3px;transition:width 0.5s;"></div>
-              </div>
-              <span class="t-secondary" style="font-size:11px;">2.5/5</span>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:4px;">
-              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="#3fb950"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
-                <span class="t-green" style="">Task 1</span>
-                <span class="t-faint" style="">2m 14s</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="#3fb950"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
-                <span class="t-green" style="">Task 2</span>
-                <span class="t-faint" style="">8m 41s</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
-                <div class="progress-circle-active" style="width:12px;height:12px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;">
-                  <div class="progress-dot-active" style="width:4px;height:4px;border-radius:50%;animation:pulse 1.5s infinite;"></div>
-                </div>
-                <span class="t-blue" style="">Task 3</span>
-                <span class="t-faint" style="">working...</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
-                <div class="progress-circle-pending" style="width:12px;height:12px;border-radius:50%;border:2px solid;"></div>
-                <span class="t-faint" style="">Task 4</span>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
-                <div class="progress-circle-pending" style="width:12px;height:12px;border-radius:50%;border:2px solid;"></div>
-                <span class="t-faint" style="">Task 5</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="sidebar-field" style="margin-top:4px;">
-          <div class="sidebar-field-label">Elapsed</div>
-          <div class="sidebar-field-value" class="t-secondary" style="font-size:12px;">12m 38s</div>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="sidebar-fields" style="border-bottom:none;">
-        <div class="sidebar-field">
-          <div class="sidebar-field-label">Actions</div>
-          <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
+            <button class="btn btn-sm btn-purple" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+              Assign to cloud coding agent
+            </button>
             <button class="btn btn-sm btn-outline" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75zM7 5.25a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5A.75.75 0 017 5.25zm.75 2.75a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM3.5 4.75a.75.75 0 011.06 0l.97.97.97-.97a.75.75 0 011.06 1.06l-.97.97.97.97a.75.75 0 01-1.06 1.06l-.97-.97-.97.97a.75.75 0 01-1.06-1.06l.97-.97-.97-.97a.75.75 0 010-1.06z"/></svg>
-              Take over locally
-            </button>
-            <button class="btn btn-sm btn-outline" class="t-red" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="#f85149"><path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/></svg>
-              Stop agent
+              Start local session
             </button>
           </div>
-          <div style="margin-top:10px;">
-            <div class="sidebar-field-label">Local Session</div>
-            <div class="cli-snippet" style="font-size:11px;padding:8px 10px;margin-top:4px;">
+          <div style="margin-top:8px;">
+            <div class="cli-snippet" style="font-size:11px;padding:8px 10px;">
               <span class="cli-prompt">$</span> <span class="cli-cmd">copilot</span> <span class="cli-flag">--issue</span> <span class="cli-cmd">1079</span> <span class="cli-flag">--plan</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Related Issues -->
-      <div class="sidebar-fields" style="border-bottom:none;">
-        <div class="sidebar-field">
-          <div class="sidebar-field-label">Related Issues</div>
-          <div class="t-muted" style="font-size:12px;display:flex;flex-direction:column;gap:4px;">
-            <a href="#" class="t-blue" style="text-decoration:none;font-size:12px;">#883 Keyboard expand/collapse</a>
-            <a href="#" class="t-blue" style="text-decoration:none;font-size:12px;">#1074 Fix over-requesting sub-issues</a>
           </div>
         </div>
       </div>
@@ -1221,11 +1141,9 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
   <div class="narrative">
     <h3>Step 3 Key Features</h3>
     <ul>
-      <li><strong>Sidebar-driven development:</strong> All development status — mode, branch, progress, elapsed time, actions — lives in the right sidebar, keeping the main content area focused on the plan and agent activity.</li>
-      <li><strong>Task-by-task progress:</strong> The sidebar shows a compact progress tracker with completion times per task. The main area shows the full plan with in-progress highlighting.</li>
-      <li><strong>Agent activity feed:</strong> Below the plan, a timeline of what the agent is doing — files created, hooks extended, issues referenced.</li>
-      <li><strong>Seamless handoff:</strong> "Take over locally" generates a CLI command that picks up where the agent left off. "Stop agent" halts cloud execution.</li>
-      <li><strong>No tab switching:</strong> Development status is always visible in the sidebar regardless of which content tab (Spec, Plan, Comments) is active.</li>
+      <li><strong>Start Development:</strong> After approving the plan, the sidebar presents clear options — assign to a cloud coding agent or start a local session.</li>
+      <li><strong>CLI shortcut:</strong> A copyable CLI command lets power users kick off work directly from their terminal.</li>
+      <li><strong>Same issue view:</strong> The left pane stays identical to Step 2 — spec body, plan card, and activity timeline — so the full context is always visible when choosing how to start.</li>
     </ul>
   </div>
 </div>
