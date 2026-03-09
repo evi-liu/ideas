@@ -398,6 +398,58 @@
   .narrative li { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
   .narrative li strong { color: var(--text-primary); }
 
+  /* ─── Plan card (like reference design) ─── */
+  .plan-card {
+    margin: 20px 24px; border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden;
+  }
+  .plan-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; border-bottom: 1px solid var(--border);
+  }
+  .plan-card-header-label { font-size: 14px; font-weight: 600; color: var(--text-muted); }
+  .plan-card-expand {
+    background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .plan-card-expand:hover { color: var(--text-primary); }
+  .plan-card-body {
+    padding: 24px; max-height: 420px; overflow-y: auto;
+  }
+  .plan-card-body h1 { font-size: 22px; font-weight: 600; margin-bottom: 16px; }
+  .plan-card-body h2 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; }
+  .plan-card-body p { font-size: 14px; color: var(--text-secondary); margin-bottom: 10px; line-height: 1.6; }
+  .plan-card-body code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+  .plan-card-body ul { padding-left: 20px; margin-bottom: 12px; }
+  .plan-card-body li { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; line-height: 1.6; }
+  .plan-card-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; border-top: 1px solid var(--border);
+  }
+  .plan-card-model {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 13px; color: var(--text-muted); cursor: pointer;
+    background: none; border: none; font-family: inherit;
+  }
+  .plan-card-model:hover { color: var(--text-primary); }
+  .plan-iterate-input {
+    margin: 0 24px 20px; border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; display: flex; flex-direction: column;
+  }
+  .plan-iterate-input textarea {
+    width: 100%; background: transparent; border: none; color: var(--text-primary);
+    padding: 14px 16px; font-size: 14px; font-family: inherit; resize: none;
+    min-height: 70px; outline: none;
+  }
+  .plan-iterate-input-footer {
+    display: flex; align-items: center; justify-content: flex-end; padding: 8px 12px;
+  }
+  .plan-iterate-send {
+    background: none; border: none; color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; padding: 4px;
+  }
+  .plan-iterate-send:hover { color: var(--text-primary); }
+
   /* ─── Sparkle icon ─── */
   .sparkle { display: inline; }
 
@@ -725,43 +777,67 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
 
       <!-- Implementation plan (revealed on click) -->
       <div id="plan-container" style="display:none;">
-        <div style="padding:0 24px 20px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-            <h2 style="font-size:18px;font-weight:600;margin:20px 0 8px;">Implementation Plan</h2>
-            <div style="display:flex;gap:6px;">
-              <button class="btn btn-sm btn-outline">Edit</button>
-              <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
-            </div>
+
+        <!-- Plan card -->
+        <div class="plan-card">
+          <div class="plan-card-header">
+            <span class="plan-card-header-label">Plan</span>
+            <button class="plan-card-expand" title="Expand">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 10a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5h-3.25a.75.75 0 01-.75-.75v-3.25a.75.75 0 01.75-.75zm12.5 0a.75.75 0 01.75.75v3.25a.75.75 0 01-.75.75h-3.25a.75.75 0 010-1.5h2.5v-2.5a.75.75 0 01.75-.75zm-12.5-9a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5H1.75A.75.75 0 011 5V1.75A.75.75 0 011.75 1zm12.5 0a.75.75 0 01.75.75V5a.75.75 0 01-.75.75h-3.25a.75.75 0 010-1.5h2.5v-2.5a.75.75 0 01.75-.75z"/></svg>
+            </button>
           </div>
-          <p class="t-secondary" style="font-size:14px;margin-bottom:16px;">5 tasks · estimated ~3 days · generated from spec and codebase analysis</p>
+          <div class="plan-card-body">
+            <h1>Implementation plan for expand/collapse all</h1>
 
-          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">1. Add ExpandCollapseAllButton component</h3>
-          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Create a new React component that renders the expand/collapse toggle icon in the table header. Wire it to hierarchy view state — only visible when <code>hierarchyEnabled</code> is true.</p>
-          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Low</p>
+            <h2>1 · Background &amp; Problem</h2>
+            <p>When viewing a project board with hierarchy enabled, users with deeply nested sub-issues (3+ levels) must click each parent row individually to expand the tree. With complex task decompositions (epic → feature → task → sub-task), this becomes tedious and makes it hard to get a full picture of the project.</p>
 
-          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">2. Implement recursive expand/fetch logic</h3>
-          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state in session storage. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid <a href="#" style="color:var(--blue);text-decoration:none;">#1074</a> (over-requesting).</p>
-          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/hooks/</code> · Complexity: High</p>
+            <h2>2 · Objective</h2>
+            <p>Add an <strong>Expand All / Collapse All</strong> toggle button in the table header area of project board views that have hierarchy enabled. The button eagerly fetches all nested levels, shows a loading indicator for large hierarchies, and persists state via the existing <code>memex_sub_issues_persist_expanded_state</code> flag.</p>
 
-          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">3. Add loading state for large hierarchy expansion</h3>
-          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Show a progress indicator (skeleton rows or spinner) when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per <a href="#" style="color:var(--blue);text-decoration:none;">#1060</a>.</p>
-          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Medium</p>
+            <h2>3 · Tasks</h2>
 
-          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">4. Integrate with sorting, filtering, and persist state</h3>
-          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code> so expand-all is saved/restored. Handle <a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> sort-change flash.</p>
-          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/state-providers/</code> · Complexity: Medium</p>
+            <p><strong>Task 1 — Add ExpandCollapseAllButton component</strong><br/>
+            Create a new React component in <code>packages/memex/src/client/components/table/</code> that renders the expand/collapse toggle icon in the table header. Only visible when <code>hierarchyEnabled</code> is true. Complexity: Low.</p>
 
-          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">5. Keyboard accessibility &amp; tests</h3>
-          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Add keyboard shortcut for expand/collapse all (per treegrid pattern <a href="#" style="color:var(--blue);text-decoration:none;">#883</a>). Add Vitest/browser tests covering: expand-all on 3-level hierarchy, collapse-all, expand-all with filters active, session storage persistence.</p>
-          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/tests/</code> · Complexity: Medium</p>
+            <p><strong>Task 2 — Implement recursive expand/fetch logic</strong><br/>
+            Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid <a href="#" style="color:var(--blue);text-decoration:none;">#1074</a>. Complexity: High.</p>
+
+            <p><strong>Task 3 — Add loading state for large hierarchy expansion</strong><br/>
+            Show skeleton rows or spinner when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per <a href="#" style="color:var(--blue);text-decoration:none;">#1060</a>. Complexity: Medium.</p>
+
+            <p><strong>Task 4 — Integrate with sorting, filtering, and persist state</strong><br/>
+            Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code>. Handle <a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> sort-change flash. Complexity: Medium.</p>
+
+            <p><strong>Task 5 — Keyboard accessibility &amp; tests</strong><br/>
+            Add keyboard shortcut per treegrid pattern (<a href="#" style="color:var(--blue);text-decoration:none;">#883</a>). Add Vitest/browser tests for expand-all, collapse-all, filters, and session storage persistence. Complexity: Medium.</p>
+
+            <h2>4 · Related Issues</h2>
+            <ul>
+              <li><a href="#" style="color:var(--blue);text-decoration:none;">#883</a> — Keyboard expand/collapse (treegrid pattern)</li>
+              <li><a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> — Polish for sort + persist state</li>
+              <li><a href="#" style="color:var(--blue);text-decoration:none;">#1074</a> — Fix over-requesting sub-issues</li>
+            </ul>
+          </div>
+          <div class="plan-card-footer">
+            <button class="plan-card-model">
+              sonnet-4.6
+              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+            </button>
+            <button class="btn btn-primary">Approve plan and start work</button>
+          </div>
         </div>
 
-        <div class="callout callout-purple">
-          <span style="font-size:16px;">💡</span>
-          <div>
-            <strong>Codebase-aware plan:</strong> Copilot identified relevant files (<code>useSubIssueExpansion</code>, table components), related open issues (#1074 over-requesting, #1071 sort flash, #883 keyboard), and the persist-state feature flag. Click <strong>"Convert to sub-issues"</strong> to turn each task into a trackable sub-issue.
+        <!-- Iterate on plan -->
+        <div class="plan-iterate-input">
+          <textarea placeholder="What would you like to change?"></textarea>
+          <div class="plan-iterate-input-footer">
+            <button class="plan-iterate-send">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M.143 2.31a.75.75 0 011.048-.29l13.5 7.5a.75.75 0 010 1.308l-13.5 7.5a.75.75 0 01-1.087-.846L2.5 9.52H6.75a.75.75 0 000-1.5H2.5L.104 3.157a.75.75 0 01.04-.847z"/></svg>
+            </button>
           </div>
         </div>
+
       </div>
 
       <!-- Comments & Timeline -->
@@ -924,35 +1000,46 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
       </div>
 
       <!-- Implementation plan — same as Step 2 (already generated) -->
-      <div style="padding:0 24px 20px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-          <h2 style="font-size:18px;font-weight:600;margin:20px 0 8px;">Implementation Plan</h2>
-          <div style="display:flex;gap:6px;">
-            <button class="btn btn-sm btn-outline">Edit</button>
-            <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
-          </div>
+      <div class="plan-card">
+        <div class="plan-card-header">
+          <span class="plan-card-header-label">Plan</span>
+          <button class="plan-card-expand" title="Expand">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 10a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5h-3.25a.75.75 0 01-.75-.75v-3.25a.75.75 0 01.75-.75zm12.5 0a.75.75 0 01.75.75v3.25a.75.75 0 01-.75.75h-3.25a.75.75 0 010-1.5h2.5v-2.5a.75.75 0 01.75-.75zm-12.5-9a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5H1.75A.75.75 0 011 5V1.75A.75.75 0 011.75 1zm12.5 0a.75.75 0 01.75.75V5a.75.75 0 01-.75.75h-3.25a.75.75 0 010-1.5h2.5v-2.5a.75.75 0 01.75-.75z"/></svg>
+          </button>
         </div>
-        <p class="t-secondary" style="font-size:14px;margin-bottom:16px;">5 tasks · estimated ~3 days · generated from spec and codebase analysis</p>
+        <div class="plan-card-body">
+          <h1>Implementation plan for expand/collapse all</h1>
 
-        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">1. Add ExpandCollapseAllButton component</h3>
-        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Create a new React component that renders the expand/collapse toggle icon in the table header. Wire it to hierarchy view state — only visible when <code>hierarchyEnabled</code> is true.</p>
-        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Low</p>
+          <h2>1 · Background &amp; Problem</h2>
+          <p>When viewing a project board with hierarchy enabled, users with deeply nested sub-issues (3+ levels) must click each parent row individually to expand the tree. With complex task decompositions (epic → feature → task → sub-task), this becomes tedious and makes it hard to get a full picture of the project.</p>
 
-        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">2. Implement recursive expand/fetch logic</h3>
-        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state in session storage. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid <a href="#" style="color:var(--blue);text-decoration:none;">#1074</a> (over-requesting).</p>
-        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/hooks/</code> · Complexity: High</p>
+          <h2>2 · Objective</h2>
+          <p>Add an <strong>Expand All / Collapse All</strong> toggle button in the table header area of project board views that have hierarchy enabled. The button eagerly fetches all nested levels, shows a loading indicator for large hierarchies, and persists state via the existing <code>memex_sub_issues_persist_expanded_state</code> flag.</p>
 
-        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">3. Add loading state for large hierarchy expansion</h3>
-        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Show a progress indicator (skeleton rows or spinner) when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per <a href="#" style="color:var(--blue);text-decoration:none;">#1060</a>.</p>
-        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Medium</p>
+          <h2>3 · Tasks</h2>
 
-        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">4. Integrate with sorting, filtering, and persist state</h3>
-        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code> so expand-all is saved/restored. Handle <a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> sort-change flash.</p>
-        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/state-providers/</code> · Complexity: Medium</p>
+          <p><strong>Task 1 — Add ExpandCollapseAllButton component</strong><br/>
+          Create a new React component in <code>packages/memex/src/client/components/table/</code> that renders the expand/collapse toggle icon in the table header. Only visible when <code>hierarchyEnabled</code> is true. Complexity: Low.</p>
 
-        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">5. Keyboard accessibility &amp; tests</h3>
-        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Add keyboard shortcut for expand/collapse all (per treegrid pattern <a href="#" style="color:var(--blue);text-decoration:none;">#883</a>). Add Vitest/browser tests covering: expand-all on 3-level hierarchy, collapse-all, expand-all with filters active, session storage persistence.</p>
-        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/tests/</code> · Complexity: Medium</p>
+          <p><strong>Task 2 — Implement recursive expand/fetch logic</strong><br/>
+          Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid <a href="#" style="color:var(--blue);text-decoration:none;">#1074</a>. Complexity: High.</p>
+
+          <p><strong>Task 3 — Add loading state for large hierarchy expansion</strong><br/>
+          Show skeleton rows or spinner when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per <a href="#" style="color:var(--blue);text-decoration:none;">#1060</a>. Complexity: Medium.</p>
+
+          <p><strong>Task 4 — Integrate with sorting, filtering, and persist state</strong><br/>
+          Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code>. Handle <a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> sort-change flash. Complexity: Medium.</p>
+
+          <p><strong>Task 5 — Keyboard accessibility &amp; tests</strong><br/>
+          Add keyboard shortcut per treegrid pattern (<a href="#" style="color:var(--blue);text-decoration:none;">#883</a>). Add Vitest/browser tests for expand-all, collapse-all, filters, and session storage persistence. Complexity: Medium.</p>
+
+          <h2>4 · Related Issues</h2>
+          <ul>
+            <li><a href="#" style="color:var(--blue);text-decoration:none;">#883</a> — Keyboard expand/collapse (treegrid pattern)</li>
+            <li><a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> — Polish for sort + persist state</li>
+            <li><a href="#" style="color:var(--blue);text-decoration:none;">#1074</a> — Fix over-requesting sub-issues</li>
+          </ul>
+        </div>
       </div>
 
       <!-- Activity -->
