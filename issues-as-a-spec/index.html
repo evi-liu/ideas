@@ -208,46 +208,6 @@
     background: var(--bg-overlay); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer;
   }
   .suggestion-chip:hover { color: var(--text-primary); border-color: var(--text-faint); }
-
-  /* ─── Q&A answer card ─── */
-  .qa-card {
-    background: var(--bg-page); border: 1px solid var(--border); border-radius: 12px;
-    margin-top: 10px; overflow: hidden;
-  }
-  .qa-card-header {
-    padding: 14px 16px 6px;
-  }
-  .qa-card-header .qa-question { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
-  .qa-card-header .qa-subtitle { font-size: 12px; color: var(--text-muted); }
-  .qa-card-options {
-    margin: 8px 12px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
-  }
-  .qa-option {
-    display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px;
-    border-bottom: 1px solid var(--border); cursor: pointer;
-  }
-  .qa-option:last-child { border-bottom: none; }
-  .qa-option:hover { background: var(--bg-surface); }
-  .qa-option-num {
-    font-size: 11px; font-weight: 600; color: var(--text-muted);
-    background: var(--bg-overlay); border: 1px solid var(--border);
-    border-radius: 6px; min-width: 22px; height: 22px;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .qa-option input[type="checkbox"] {
-    width: 16px; height: 16px; margin: 2px 0 0; flex-shrink: 0; accent-color: var(--green);
-  }
-  .qa-option-content { flex: 1; }
-  .qa-option-label { font-size: 14px; font-weight: 500; color: var(--text-primary); }
-  .qa-option-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-  .qa-option-badge {
-    font-size: 11px; font-weight: 600; color: var(--green); border: 1px solid var(--green);
-    border-radius: 10px; padding: 2px 10px; white-space: nowrap; flex-shrink: 0; align-self: center;
-  }
-  .qa-card-footer {
-    padding: 10px 16px; display: flex; align-items: center; gap: 8px;
-  }
-
   .chat-input-area {
     padding: 12px; border-top: 1px solid var(--border); background: var(--bg-surface);
   }
@@ -627,34 +587,20 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
         <div class="chat-msg">
           <div class="chat-avatar chat-avatar-ai">C</div>
           <div class="chat-bubble chat-bubble-ai">
-            <div class="qa-card">
-              <div class="qa-card-header">
-                <div class="qa-question">Where should this button appear?</div>
-                <div class="qa-subtitle">I see hierarchy is currently in project board table views.</div>
-              </div>
-              <div class="qa-card-options">
-                <label class="qa-option">
-                  <span class="qa-option-num">1</span>
-                  <input type="checkbox" checked disabled />
-                  <span class="qa-option-content"><span class="qa-option-label">Project board views only</span></span>
-                  <span class="qa-option-badge">Recommended</span>
-                </label>
-                <label class="qa-option">
-                  <span class="qa-option-num">2</span>
-                  <input type="checkbox" disabled />
-                  <span class="qa-option-content"><span class="qa-option-label">Issue detail page sub-issues section</span></span>
-                </label>
-                <label class="qa-option">
-                  <span class="qa-option-num">3</span>
-                  <input type="checkbox" disabled />
-                  <span class="qa-option-content"><span class="qa-option-label">Both project views and issue page</span></span>
-                </label>
-              </div>
-              <div class="qa-card-footer">
-                <button class="btn btn-primary btn-sm" disabled style="opacity:.6">Submitted</button>
-                <button class="btn btn-sm btn-outline" disabled style="opacity:.5">Skip</button>
-              </div>
+            <strong>Where should this button appear?</strong> I see hierarchy is currently in project board table views. Should it also show on the issue detail page sub-issues section?
+            <div class="suggestion-chips">
+              <span class="suggestion-chip">Project views only</span>
+              <span class="suggestion-chip">Issue page only</span>
+              <span class="suggestion-chip">Both</span>
             </div>
+          </div>
+        </div>
+
+        <!-- User A1 -->
+        <div class="chat-msg user">
+          <div class="chat-avatar chat-avatar-user">EL</div>
+          <div class="chat-bubble chat-bubble-user">
+            Project board views only for now. Issue page can be a follow-up.
           </div>
         </div>
 
@@ -662,40 +608,20 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
         <div class="chat-msg">
           <div class="chat-avatar chat-avatar-ai">C</div>
           <div class="chat-bubble chat-bubble-ai">
-            <div class="qa-card">
-              <div class="qa-card-header">
-                <div class="qa-question">What about data fetching?</div>
-                <div class="qa-subtitle">Nested sub-issues are lazy-loaded — deeper levels aren't fetched until a parent is expanded.</div>
-              </div>
-              <div class="qa-card-options">
-                <label class="qa-option">
-                  <span class="qa-option-num">1</span>
-                  <input type="checkbox" checked disabled />
-                  <span class="qa-option-content">
-                    <span class="qa-option-label">Eagerly fetch all levels</span>
-                    <div class="qa-option-desc">Show a loading indicator for large hierarchies while fetching</div>
-                  </span>
-                  <span class="qa-option-badge">Recommended</span>
-                </label>
-                <label class="qa-option">
-                  <span class="qa-option-num">2</span>
-                  <input type="checkbox" disabled />
-                  <span class="qa-option-content">
-                    <span class="qa-option-label">Only expand already-loaded levels</span>
-                    <div class="qa-option-desc">Fast but incomplete — users must manually expand deeper levels</div>
-                  </span>
-                </label>
-                <label class="qa-option">
-                  <span class="qa-option-num">3</span>
-                  <input type="checkbox" disabled />
-                  <span class="qa-option-content"><span class="qa-option-label">Progressive loading (expand level-by-level)</span></span>
-                </label>
-              </div>
-              <div class="qa-card-footer">
-                <button class="btn btn-primary btn-sm" disabled style="opacity:.6">Submitted</button>
-                <button class="btn btn-sm btn-outline" disabled style="opacity:.5">Skip</button>
-              </div>
+            Got it. <strong>What about data fetching?</strong> Nested sub-issues are lazy-loaded — deeper levels aren't fetched until a parent is expanded. When a user clicks "Expand All":
+            <div class="suggestion-chips">
+              <span class="suggestion-chip">Eagerly fetch all levels</span>
+              <span class="suggestion-chip">Only expand already-loaded</span>
+              <span class="suggestion-chip">Progressive loading</span>
             </div>
+          </div>
+        </div>
+
+        <!-- User A2 -->
+        <div class="chat-msg user">
+          <div class="chat-avatar chat-avatar-user">EL</div>
+          <div class="chat-bubble chat-bubble-user">
+            Eagerly fetch all levels, but show a loading indicator for large hierarchies.
           </div>
         </div>
 
@@ -703,37 +629,20 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
         <div class="chat-msg">
           <div class="chat-avatar chat-avatar-ai">C</div>
           <div class="chat-bubble chat-bubble-ai">
-            <div class="qa-card">
-              <div class="qa-card-header">
-                <div class="qa-question">Should expand-all state persist to session storage?</div>
-                <div class="qa-subtitle">Found issue #883 (keyboard expand/collapse) and the <code style="font-size:11px;">memex_sub_issues_persist_expanded_state</code> flag.</div>
-              </div>
-              <div class="qa-card-options">
-                <label class="qa-option">
-                  <span class="qa-option-num">1</span>
-                  <input type="checkbox" disabled />
-                  <span class="qa-option-content"><span class="qa-option-label">Yes, persist it</span></span>
-                </label>
-                <label class="qa-option">
-                  <span class="qa-option-num">2</span>
-                  <input type="checkbox" disabled />
-                  <span class="qa-option-content"><span class="qa-option-label">No, transient only</span></span>
-                </label>
-                <label class="qa-option">
-                  <span class="qa-option-num">3</span>
-                  <input type="checkbox" checked disabled />
-                  <span class="qa-option-content">
-                    <span class="qa-option-label">Follow existing flag behavior</span>
-                    <div class="qa-option-desc">Use the existing <code style="font-size:11px;">memex_sub_issues_persist_expanded_state</code> feature flag</div>
-                  </span>
-                  <span class="qa-option-badge">Recommended</span>
-                </label>
-              </div>
-              <div class="qa-card-footer">
-                <button class="btn btn-primary btn-sm" disabled style="opacity:.6">Submitted</button>
-                <button class="btn btn-sm btn-outline" disabled style="opacity:.5">Skip</button>
-              </div>
+            Makes sense. I also found <strong>issue #883</strong> (keyboard expand/collapse with treegrid pattern) and the <code>memex_sub_issues_persist_expanded_state</code> flag. I'll add those as related context. <strong>Should expand-all state persist to session storage?</strong>
+            <div class="suggestion-chips">
+              <span class="suggestion-chip">Yes, persist it</span>
+              <span class="suggestion-chip">No, transient only</span>
+              <span class="suggestion-chip">Follow existing flag behavior</span>
             </div>
+          </div>
+        </div>
+
+        <!-- User A3 -->
+        <div class="chat-msg user">
+          <div class="chat-avatar chat-avatar-user">EL</div>
+          <div class="chat-bubble chat-bubble-user">
+            Follow existing flag behavior.
           </div>
         </div>
 
