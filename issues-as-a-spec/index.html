@@ -760,7 +760,7 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
       </div>
 
       <!-- Generate Plan CTA -->
-      <div class="border-subtle-color" style="padding:20px 24px; border-bottom:1px solid;">
+      <div id="gen-plan-banner" class="border-subtle-color" style="padding:20px 24px; border-bottom:1px solid;">
         <div class="gen-plan-banner" style="display:flex;align-items:center;justify-content:space-between; border-radius:8px; padding:16px 20px;">
           <div style="display:flex;align-items:center;gap:12px;">
             <svg width="24" height="24" viewBox="0 0 16 16" fill="#a371f7"><path d="M7.998 14.5c2.832 0 5-1.98 5-4.5 0-1.463-.68-2.19-1.879-3.383l-.036-.037C9.865 5.343 8.66 4.1 8.16 2.5a.75.75 0 00-1.43.1c-.27 1.33-.997 2.377-1.51 3.09-.344.479-.596.747-.737.963C3.6 8.083 3 9.292 3 10.5c0 2.25 2.168 4 5 4zm0-12a.75.75 0 01.533.217c.398.39.756.756 1.091 1.14.322.37.636.765.918 1.2C11.2 5.944 12 7.117 12 8.5c0 3.24-2.75 5.5-6 5.5s-6-2.26-6-5.5c0-1.717.884-3.174 1.834-4.31.455-.545.947-1.028 1.371-1.435.19-.183.36-.347.51-.502A.75.75 0 018 2.5z"/></svg>
@@ -1250,11 +1250,8 @@ function show(id) {
   event.target.classList.add('active');
 }
 function showPlan() {
+  document.getElementById('gen-plan-banner').style.display = 'none';
   document.getElementById('plan-container').style.display = 'block';
-  document.getElementById('gen-plan-btn').textContent = 'Plan Generated';
-  document.getElementById('gen-plan-btn').style.background = 'var(--btn-primary-bg)';
-  document.getElementById('gen-plan-btn').style.borderColor = 'var(--btn-primary-border)';
-  document.getElementById('gen-plan-btn').disabled = true;
   document.getElementById('sidebar-dev').style.display = 'block';
   document.getElementById('plan-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
