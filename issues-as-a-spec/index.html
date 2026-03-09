@@ -725,81 +725,35 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
 
       <!-- Implementation plan (revealed on click) -->
       <div id="plan-container" style="display:none;">
-        <div class="plan-section">
-          <div class="plan-header">
-            <div class="plan-header-left">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="#a371f7"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
-              <span class="plan-header-title">Implementation Plan</span>
-              <span class="plan-header-badge">5 tasks · ~3 days est.</span>
-            </div>
+        <div style="padding:0 24px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+            <h2 style="font-size:18px;font-weight:600;margin:20px 0 8px;">Implementation Plan</h2>
             <div style="display:flex;gap:6px;">
               <button class="btn btn-sm btn-outline">Edit</button>
               <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
             </div>
           </div>
-          <div class="plan-body">
+          <p class="t-secondary" style="font-size:14px;margin-bottom:16px;">5 tasks · estimated ~3 days · generated from spec and codebase analysis</p>
 
-            <div class="plan-task">
-              <input type="checkbox" class="plan-task-check" disabled />
-              <div class="plan-task-content">
-                <div class="plan-task-title">1. Add ExpandCollapseAllButton component</div>
-                <div class="plan-task-desc">Create a new React component that renders the expand/collapse toggle icon in the table header. Wire it to hierarchy view state — only visible when <code>hierarchyEnabled</code> is true.</div>
-                <div class="plan-task-meta">
-                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/components/table/</span>
-                  <span class="plan-task-tag tag-complexity-low">◆ Low</span>
-                </div>
-              </div>
-            </div>
+          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">1. Add ExpandCollapseAllButton component</h3>
+          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Create a new React component that renders the expand/collapse toggle icon in the table header. Wire it to hierarchy view state — only visible when <code>hierarchyEnabled</code> is true.</p>
+          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Low</p>
 
-            <div class="plan-task">
-              <input type="checkbox" class="plan-task-check" disabled />
-              <div class="plan-task-content">
-                <div class="plan-task-title">2. Implement recursive expand/fetch logic</div>
-                <div class="plan-task-desc">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state in session storage. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid #1074 (over-requesting).</div>
-                <div class="plan-task-meta">
-                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/hooks/</span>
-                  <span class="plan-task-tag tag-complexity-high">◆ High</span>
-                </div>
-              </div>
-            </div>
+          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">2. Implement recursive expand/fetch logic</h3>
+          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state in session storage. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid <a href="#" style="color:var(--blue);text-decoration:none;">#1074</a> (over-requesting).</p>
+          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/hooks/</code> · Complexity: High</p>
 
-            <div class="plan-task">
-              <input type="checkbox" class="plan-task-check" disabled />
-              <div class="plan-task-content">
-                <div class="plan-task-title">3. Add loading state for large hierarchy expansion</div>
-                <div class="plan-task-desc">Show a progress indicator (skeleton rows or spinner) when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per #1060.</div>
-                <div class="plan-task-meta">
-                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/components/table/</span>
-                  <span class="plan-task-tag tag-complexity-med">◆ Medium</span>
-                </div>
-              </div>
-            </div>
+          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">3. Add loading state for large hierarchy expansion</h3>
+          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Show a progress indicator (skeleton rows or spinner) when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per <a href="#" style="color:var(--blue);text-decoration:none;">#1060</a>.</p>
+          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Medium</p>
 
-            <div class="plan-task">
-              <input type="checkbox" class="plan-task-check" disabled />
-              <div class="plan-task-content">
-                <div class="plan-task-title">4. Integrate with sorting, filtering, and persist state</div>
-                <div class="plan-task-desc">Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code> so expand-all is saved/restored. Handle #1071 sort-change flash.</div>
-                <div class="plan-task-meta">
-                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/state-providers/</span>
-                  <span class="plan-task-tag tag-complexity-med">◆ Medium</span>
-                </div>
-              </div>
-            </div>
+          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">4. Integrate with sorting, filtering, and persist state</h3>
+          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code> so expand-all is saved/restored. Handle <a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> sort-change flash.</p>
+          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/state-providers/</code> · Complexity: Medium</p>
 
-            <div class="plan-task">
-              <input type="checkbox" class="plan-task-check" disabled />
-              <div class="plan-task-content">
-                <div class="plan-task-title">5. Keyboard accessibility & tests</div>
-                <div class="plan-task-desc">Add keyboard shortcut for expand/collapse all (per treegrid pattern #883). Add Vitest/browser tests covering: expand-all on 3-level hierarchy, collapse-all, expand-all with filters active, session storage persistence.</div>
-                <div class="plan-task-meta">
-                  <span class="plan-task-tag tag-files">📁 packages/memex/src/tests/</span>
-                  <span class="plan-task-tag tag-complexity-med">◆ Medium</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
+          <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">5. Keyboard accessibility &amp; tests</h3>
+          <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Add keyboard shortcut for expand/collapse all (per treegrid pattern <a href="#" style="color:var(--blue);text-decoration:none;">#883</a>). Add Vitest/browser tests covering: expand-all on 3-level hierarchy, collapse-all, expand-all with filters active, session storage persistence.</p>
+          <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/tests/</code> · Complexity: Medium</p>
         </div>
 
         <div class="callout callout-purple">
@@ -961,88 +915,52 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
         </div>
       </div>
 
-      <div class="plan-section">
-        <div class="plan-header">
-          <div class="plan-header-left">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="#a371f7"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
-            <span class="plan-header-title">Implementation Plan</span>
-            <span class="plan-header-badge">2 of 5 complete</span>
-          </div>
+      <div class="md-preview" style="padding-bottom:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <h2 style="margin:0;">Implementation Plan</h2>
           <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
         </div>
-        <div class="plan-body">
+        <p class="t-secondary" style="margin-bottom:16px;">2 of 5 tasks complete</p>
 
-          <!-- Task 1: Done -->
-          <div class="plan-task">
-            <input type="checkbox" class="plan-task-check" checked disabled />
-            <div class="plan-task-content">
-              <div class="plan-task-title" class="t-green" style="">1. Add ExpandCollapseAllButton component</div>
-              <div class="plan-task-desc">Create a new React component that renders the expand/collapse toggle icon in the table header.</div>
-              <div class="plan-task-meta">
-                <span class="plan-task-tag tag-files">packages/memex/src/client/components/table/</span>
-                <span class="plan-task-tag tag-complexity-low">Low</span>
-                <span class="plan-task-tag" class="badge-green" style="">2m 14s</span>
-              </div>
-            </div>
+        <h3 style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
+          <span class="t-green" style="text-decoration:line-through;font-weight:500;">1. Add ExpandCollapseAllButton component</span>
+          <span class="t-faint" style="font-size:12px;font-weight:400;">2m 14s</span>
+        </h3>
+        <p class="t-muted" style="margin-bottom:4px;">Create a new React component that renders the expand/collapse toggle icon in the table header.</p>
+        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Low</p>
+
+        <h3 style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
+          <span class="t-green" style="text-decoration:line-through;font-weight:500;">2. Implement recursive expand/fetch logic</span>
+          <span class="t-faint" style="font-size:12px;font-weight:400;">8m 41s</span>
+        </h3>
+        <p class="t-muted" style="margin-bottom:4px;">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> and <code>collapseAll()</code>.</p>
+        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/hooks/</code> · Complexity: High</p>
+
+        <h3 style="display:flex;align-items:center;gap:8px;padding:8px 0;background:var(--blue-bg);border-radius:6px;padding:6px 8px;margin-left:-8px;margin-right:-8px;">
+          <div class="progress-circle-active" style="width:14px;height:14px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;">
+            <div class="progress-dot-active" style="width:4px;height:4px;border-radius:50%;animation:pulse 1.5s infinite;"></div>
           </div>
+          <span class="t-blue" style="font-weight:500;">3. Add loading state for large hierarchy expansion</span>
+          <span class="t-faint" style="font-size:12px;font-weight:400;">working...</span>
+        </h3>
+        <p class="t-secondary" style="margin-bottom:4px;">Show a progress indicator when expand-all triggers multiple network fetches. Debounce renders.</p>
+        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Medium</p>
 
-          <!-- Task 2: Done -->
-          <div class="plan-task">
-            <input type="checkbox" class="plan-task-check" checked disabled />
-            <div class="plan-task-content">
-              <div class="plan-task-title" class="t-green" style="">2. Implement recursive expand/fetch logic</div>
-              <div class="plan-task-desc">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> and <code>collapseAll()</code>.</div>
-              <div class="plan-task-meta">
-                <span class="plan-task-tag tag-files">packages/memex/src/client/hooks/</span>
-                <span class="plan-task-tag tag-complexity-high">High</span>
-                <span class="plan-task-tag" class="badge-green" style="">8m 41s</span>
-              </div>
-            </div>
-          </div>
+        <h3 style="display:flex;align-items:center;gap:8px;">
+          <div class="progress-circle-pending" style="width:14px;height:14px;border-radius:50%;border:2px solid;"></div>
+          <span class="t-muted" style="font-weight:500;">4. Integrate with sorting, filtering, and persist state</span>
+        </h3>
+        <p class="t-faint" style="margin-bottom:4px;">Ensure expand-all respects active filters. Integrate with persist-state flag.</p>
+        <p class="t-faint" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/state-providers/</code> · Complexity: Medium</p>
 
-          <!-- Task 3: In Progress -->
-          <div class="plan-task" style="background:var(--blue-bg);border-radius:6px;padding:10px;margin:0 -10px;">
-            <div class="progress-circle-active" style="width:16px;height:16px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;margin-top:2px;flex-shrink:0;">
-              <div class="progress-dot-active" style="width:6px;height:6px;border-radius:50%;animation:pulse 1.5s infinite;"></div>
-            </div>
-            <div class="plan-task-content">
-              <div class="plan-task-title" class="t-blue" style="">3. Add loading state for large hierarchy expansion</div>
-              <div class="plan-task-desc">Show a progress indicator when expand-all triggers multiple network fetches. Debounce renders.</div>
-              <div class="plan-task-meta">
-                <span class="plan-task-tag tag-files">packages/memex/src/client/components/table/</span>
-                <span class="plan-task-tag tag-complexity-med">Medium</span>
-                <span class="plan-task-tag" class="badge-blue" style="">working...</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Task 4: Pending -->
-          <div class="plan-task">
-            <div class="progress-circle-pending" style="width:16px;height:16px;border-radius:50%;border:2px solid;margin-top:2px;flex-shrink:0;"></div>
-            <div class="plan-task-content">
-              <div class="plan-task-title" class="t-muted" style="">4. Integrate with sorting, filtering, and persist state</div>
-              <div class="plan-task-desc" class="t-faint" style="">Ensure expand-all respects active filters. Integrate with persist-state flag.</div>
-              <div class="plan-task-meta">
-                <span class="plan-task-tag tag-files" style="opacity:0.5;">packages/memex/src/client/state-providers/</span>
-                <span class="plan-task-tag tag-complexity-med" style="opacity:0.5;">Medium</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Task 5: Pending -->
-          <div class="plan-task">
-            <div class="progress-circle-pending" style="width:16px;height:16px;border-radius:50%;border:2px solid;margin-top:2px;flex-shrink:0;"></div>
-            <div class="plan-task-content">
-              <div class="plan-task-title" class="t-muted" style="">5. Keyboard accessibility & tests</div>
-              <div class="plan-task-desc" class="t-faint" style="">Add keyboard shortcut and tests for expand/collapse all.</div>
-              <div class="plan-task-meta">
-                <span class="plan-task-tag tag-files" style="opacity:0.5;">packages/memex/src/tests/</span>
-                <span class="plan-task-tag tag-complexity-med" style="opacity:0.5;">Medium</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        <h3 style="display:flex;align-items:center;gap:8px;">
+          <div class="progress-circle-pending" style="width:14px;height:14px;border-radius:50%;border:2px solid;"></div>
+          <span class="t-muted" style="font-weight:500;">5. Keyboard accessibility &amp; tests</span>
+        </h3>
+        <p class="t-faint" style="margin-bottom:4px;">Add keyboard shortcut and tests for expand/collapse all.</p>
+        <p class="t-faint" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/tests/</code> · Complexity: Medium</p>
       </div>
 
       <!-- Activity -->
