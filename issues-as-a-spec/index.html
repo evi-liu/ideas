@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Issues-as-a-Spec — Concept Mockups</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  /* ─── Theme tokens ─── */
+  :root {
+    --bg-page: #0d1117;
+    --bg-surface: #161b22;
+    --bg-overlay: #21262d;
+    --bg-inset: #010409;
+    --text-primary: #e6edf3;
+    --text-secondary: #9198a1;
+    --text-muted: #7d8590;
+    --text-faint: #484f58;
+    --border: #30363d;
+    --border-subtle: #21262d;
+    --blue: #4493f8;
+    --blue-bg: #1f6feb22;
+    --blue-border: #1f6feb44;
+    --green: #3fb950;
+    --green-bg: #23863622;
+    --green-border: #23863644;
+    --red: #f85149;
+    --red-bg: #f8514922;
+    --red-border: #f8514944;
+    --yellow: #d29922;
+    --purple: #a371f7;
+    --purple-bg: #8957e522;
+    --purple-border: #8957e544;
+    --btn-primary-bg: #238636;
+    --btn-primary-hover: #2ea043;
+    --btn-primary-border: #2ea043;
+    --btn-blue-bg: #1f6feb;
+    --btn-blue-hover: #388bfd;
+    --btn-secondary-bg: #21262d;
+    --btn-secondary-border: #30363d;
+    --input-bg: #0d1117;
+    --code-bg: #21262d;
+    --accent-orange: #f78166;
+  }
+
+  :root.light {
+    --bg-page: #ffffff;
+    --bg-surface: #f6f8fa;
+    --bg-overlay: #eaeef2;
+    --bg-inset: #f6f8fa;
+    --text-primary: #1f2328;
+    --text-secondary: #656d76;
+    --text-muted: #656d76;
+    --text-faint: #8b949e;
+    --border: #d0d7de;
+    --border-subtle: #d8dee4;
+    --blue: #0969da;
+    --blue-bg: #ddf4ff;
+    --blue-border: #54aeff66;
+    --green: #1a7f37;
+    --green-bg: #dafbe1;
+    --green-border: #4ac26b66;
+    --red: #cf222e;
+    --red-bg: #ffebe9;
+    --red-border: #ff818266;
+    --yellow: #9a6700;
+    --purple: #8250df;
+    --purple-bg: #fbefff;
+    --purple-border: #c297ff66;
+    --btn-primary-bg: #1f883d;
+    --btn-primary-hover: #1a7f37;
+    --btn-primary-border: #1a7f37;
+    --btn-blue-bg: #0969da;
+    --btn-blue-hover: #0550ae;
+    --btn-secondary-bg: #f3f4f6;
+    --btn-secondary-border: #d0d7de;
+    --input-bg: #ffffff;
+    --code-bg: #eef1f5;
+    --accent-orange: #cf4e17;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    background: var(--bg-page); color: var(--text-primary); line-height: 1.5;
+  }
+
+  /* ─── Phase Nav ─── */
+  .option-nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; gap: 4px; flex-wrap: wrap; align-items: center;
+    background: var(--bg-inset); border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+  }
+  .option-btn {
+    background: var(--bg-overlay); color: var(--text-secondary); border: 1px solid var(--border);
+    padding: 8px 18px; border-radius: 6px; cursor: pointer;
+    font-size: 13px; font-weight: 500; transition: all .15s;
+  }
+  .option-btn:hover { background: var(--border); color: var(--text-primary); }
+  .option-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  .theme-toggle {
+    margin-left: auto; background: var(--bg-overlay); border: 1px solid var(--border);
+    color: var(--text-secondary); width: 34px; height: 34px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all .15s; flex-shrink: 0;
+  }
+  .theme-toggle:hover { background: var(--border); color: var(--text-primary); }
+
+  .mockup-section { display: none; }
+  .mockup-section.active { display: block; }
+
+  /* ─── GitHub Shell ─── */
+  .gh-header {
+    background: var(--bg-surface); border-bottom: 1px solid var(--border);
+    padding: 14px 24px; display: flex; align-items: center; gap: 12px;
+  }
+  .gh-header .breadcrumb { font-size: 15px; color: var(--text-secondary); }
+  .gh-header .breadcrumb a { color: var(--blue); text-decoration: none; }
+  .gh-header .breadcrumb span { color: var(--text-primary); font-weight: 600; }
+
+  /* ─── Layout ─── */
+  .split-layout {
+    display: grid; grid-template-columns: 1fr 420px; min-height: calc(100vh - 110px);
+  }
+  .split-layout-3col {
+    display: grid; grid-template-columns: 1fr 340px; min-height: calc(100vh - 110px);
+  }
+  .main-pane { border-right: 1px solid var(--border); }
+  .chat-pane { background: var(--bg-page); display: flex; flex-direction: column; }
+
+  /* ─── Form ─── */
+  .form-section { padding: 24px; }
+  .form-group { margin-bottom: 20px; }
+  .form-label { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; display: block; }
+  .form-input {
+    width: 100%; background: var(--input-bg); border: 1px solid var(--border); color: var(--text-primary);
+    padding: 8px 12px; border-radius: 6px; font-size: 14px; font-family: inherit;
+  }
+  .form-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-bg); }
+  .form-textarea {
+    width: 100%; background: var(--input-bg); border: 1px solid var(--border); color: var(--text-primary);
+    padding: 12px; border-radius: 6px; font-size: 14px; font-family: inherit;
+    min-height: 200px; resize: vertical; line-height: 1.6;
+  }
+  .form-textarea:focus { outline: none; border-color: var(--blue); }
+
+  .form-toolbar {
+    display: flex; align-items: center; gap: 8px; padding: 12px 24px;
+    border-top: 1px solid var(--border-subtle); background: var(--bg-surface);
+  }
+  .btn {
+    padding: 7px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;
+    cursor: pointer; border: 1px solid transparent; transition: all .15s;
+  }
+  .btn-primary { background: var(--btn-primary-bg); color: #fff; border-color: var(--btn-primary-border); }
+  .btn-primary:hover { background: var(--btn-primary-hover); }
+  .btn-secondary { background: var(--btn-secondary-bg); color: var(--text-primary); border-color: var(--btn-secondary-border); }
+  .btn-secondary:hover { background: var(--bg-overlay); }
+  .btn-blue { background: var(--btn-blue-bg); color: #fff; border-color: var(--btn-blue-hover); }
+  .btn-blue:hover { background: var(--btn-blue-hover); }
+  .btn-purple { background: #8957e5; color: #fff; border-color: var(--purple); }
+  .btn-purple:hover { background: var(--purple); }
+  .btn-outline { background: transparent; color: var(--text-secondary); border-color: var(--border); }
+  .btn-outline:hover { color: var(--text-primary); border-color: var(--text-faint); }
+  .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+  /* ─── Sidebar fields ─── */
+  .sidebar-fields { padding: 16px 24px; border-bottom: 1px solid var(--border-subtle); }
+  .sidebar-field { margin-bottom: 14px; }
+  .sidebar-field-label { font-size: 12px; color: var(--text-muted); font-weight: 600; margin-bottom: 4px; }
+  .sidebar-field-value { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+  .sidebar-field-value a { color: var(--blue); text-decoration: none; }
+
+  /* ─── Chat ─── */
+  .chat-header {
+    padding: 14px 16px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; background: var(--bg-surface);
+  }
+  .chat-header-title { font-size: 14px; font-weight: 600; }
+  .chat-header-badge {
+    font-size: 11px; background: var(--blue-bg); color: var(--blue);
+    padding: 2px 8px; border-radius: 10px; border: 1px solid var(--blue-border);
+  }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .chat-msg {
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .chat-msg.user { flex-direction: row-reverse; }
+  .chat-avatar {
+    width: 28px; height: 28px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .chat-avatar-ai { background: var(--btn-blue-bg); color: #fff; }
+  .chat-avatar-user { background: var(--bg-overlay); color: var(--text-primary); }
+  .chat-bubble {
+    max-width: 85%; padding: 10px 14px; border-radius: 12px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .chat-bubble-ai { background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-primary); border-top-left-radius: 4px; }
+  .chat-bubble-user { background: var(--blue-bg); border: 1px solid var(--blue-border); color: var(--text-primary); border-top-right-radius: 4px; }
+  .chat-bubble code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+  .chat-bubble .suggestion-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .suggestion-chip {
+    font-size: 11px; padding: 4px 10px; border-radius: 12px;
+    background: var(--bg-overlay); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer;
+  }
+  .suggestion-chip:hover { color: var(--text-primary); border-color: var(--text-faint); }
+  .chat-input-area {
+    padding: 12px; border-top: 1px solid var(--border); background: var(--bg-surface);
+  }
+  .chat-input-wrapper {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px;
+  }
+  .chat-input {
+    flex: 1; background: transparent; border: none; color: var(--text-primary);
+    font-size: 13px; font-family: inherit; outline: none;
+  }
+  .chat-send {
+    background: var(--btn-blue-bg); color: #fff; border: none; width: 28px; height: 28px;
+    border-radius: 6px; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+  }
+  .chat-send:hover { background: var(--btn-blue-hover); }
+
+  .chat-action-applied {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 12px; background: var(--green-bg); border: 1px solid var(--green-border);
+    border-radius: 8px; font-size: 12px; color: var(--green); margin-top: 8px;
+  }
+
+  /* ─── Markdown preview ─── */
+  .md-preview { padding: 24px; }
+  .md-preview h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px; }
+  .md-preview h2 { font-size: 18px; font-weight: 600; margin: 20px 0 8px; color: var(--text-primary); }
+  .md-preview h3 { font-size: 15px; font-weight: 600; margin: 16px 0 6px; color: var(--text-primary); }
+  .md-preview p { font-size: 14px; color: var(--text-secondary); margin-bottom: 10px; }
+  .md-preview ul { padding-left: 24px; margin-bottom: 12px; }
+  .md-preview li { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; }
+  .md-preview li strong { color: var(--text-primary); }
+  .md-preview .checkbox { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 4px; }
+  .md-preview .checkbox input { margin-top: 4px; accent-color: var(--blue); }
+  .md-preview code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; font-size: 13px; color: var(--text-primary); }
+  .md-preview pre {
+    background: var(--bg-surface); border: 1px solid var(--border); border-radius: 6px;
+    padding: 12px; font-size: 12px; overflow-x: auto; margin-bottom: 12px;
+    font-family: "SFMono-Regular", Consolas, monospace; color: var(--text-primary);
+  }
+
+  /* ─── Issue page elements ─── */
+  .issue-header-bar {
+    padding: 20px 24px; border-bottom: 1px solid var(--border-subtle);
+  }
+  .issue-title-row {
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .issue-title { font-size: 24px; font-weight: 600; }
+  .issue-number { font-size: 24px; color: var(--text-muted); font-weight: 300; }
+  .issue-state-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 12px; border-radius: 16px; font-size: 13px; font-weight: 500;
+    margin-top: 8px;
+  }
+  .state-open { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+
+  .issue-tabs {
+    display: flex; gap: 0; background: var(--bg-page); border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+  .issue-tab {
+    padding: 10px 16px; font-size: 13px; color: var(--text-secondary); cursor: pointer;
+    border-bottom: 2px solid transparent;
+  }
+  .issue-tab:hover { color: var(--text-primary); }
+  .issue-tab.active { color: var(--text-primary); border-bottom-color: var(--accent-orange); }
+
+  /* ─── Implementation plan ─── */
+  .plan-section {
+    margin: 20px 24px; background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  .plan-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px; background: var(--purple-bg); border-bottom: 1px solid var(--border);
+  }
+  .plan-header-left { display: flex; align-items: center; gap: 10px; }
+  .plan-header-title { font-size: 14px; font-weight: 600; }
+  .plan-header-badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 10px;
+    background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple-border);
+  }
+  .plan-body { padding: 16px; }
+  .plan-task {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 0; border-bottom: 1px solid var(--border-subtle);
+  }
+  .plan-task:last-child { border-bottom: none; }
+  .plan-task-check { margin-top: 2px; accent-color: var(--blue); }
+  .plan-task-content { flex: 1; }
+  .plan-task-title { font-size: 13px; font-weight: 500; }
+  .plan-task-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .plan-task-meta { display: flex; gap: 8px; margin-top: 4px; }
+  .plan-task-tag {
+    font-size: 10px; padding: 1px 6px; border-radius: 8px;
+    border: 1px solid var(--border); color: var(--text-secondary);
+  }
+  .tag-files { background: var(--bg-overlay); }
+  .tag-complexity-low { color: var(--green); border-color: var(--green-border); }
+  .tag-complexity-med { color: var(--yellow); border-color: var(--yellow); }
+  .tag-complexity-high { color: var(--red); border-color: var(--red-border); }
+
+  /* ─── Assign agent ─── */
+  .assign-section {
+    margin: 20px 24px; background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  .assign-header {
+    padding: 14px 16px; background: var(--blue-bg); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .assign-title { font-size: 14px; font-weight: 600; }
+  .assign-options { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .assign-option {
+    display: flex; align-items: center; gap: 14px; padding: 14px;
+    border-radius: 8px; cursor: pointer; border: 1px solid transparent;
+    transition: all .15s;
+  }
+  .assign-option:hover { background: var(--bg-overlay); border-color: var(--border); }
+  .assign-option.selected { background: var(--blue-bg); border-color: var(--blue-border); }
+  .assign-option-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .assign-option-icon.cloud { background: var(--blue-bg); color: var(--blue); }
+  .assign-option-icon.local { background: var(--purple-bg); color: var(--purple); }
+  .assign-option-icon.human { background: var(--bg-overlay); color: var(--text-secondary); }
+  .assign-option-body { flex: 1; }
+  .assign-option-title { font-size: 14px; font-weight: 600; }
+  .assign-option-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .assign-option-badge {
+    font-size: 10px; padding: 2px 8px; border-radius: 10px;
+    font-weight: 500;
+  }
+
+  /* ─── Typing indicator ─── */
+  .typing-indicator { display: flex; gap: 4px; padding: 4px 0; }
+  .typing-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--blue);
+    animation: typing-bounce 1.4s infinite ease-in-out;
+  }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing-bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ─── Diff-insert highlight ─── */
+  .diff-insert {
+    background: var(--green-bg); border-left: 3px solid var(--green);
+    padding: 2px 8px; margin: 2px 0; border-radius: 0 4px 4px 0;
+  }
+
+  /* ─── CLI snippet ─── */
+  .cli-snippet {
+    background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px; margin-top: 10px; font-family: "SFMono-Regular", Consolas, monospace;
+    font-size: 12px;
+  }
+  .cli-prompt { color: var(--text-muted); }
+  .cli-cmd { color: var(--text-primary); }
+  .cli-flag { color: var(--purple); }
+
+  /* ─── Annotation callout ─── */
+  .callout {
+    margin: 16px 24px; padding: 14px 16px; border-radius: 8px;
+    font-size: 13px; display: flex; align-items: flex-start; gap: 10px;
+  }
+  .callout-blue { background: var(--blue-bg); border: 1px solid var(--blue-border); color: var(--text-secondary); }
+  .callout-blue strong { color: var(--blue); }
+  .callout-purple { background: var(--purple-bg); border: 1px solid var(--purple-border); color: var(--text-secondary); }
+  .callout-purple strong { color: var(--purple); }
+  .callout-green { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--text-secondary); }
+  .callout-green strong { color: var(--green); }
+
+  /* ─── Narrative ─── */
+  .narrative {
+    margin: 20px 24px; padding: 20px; background: var(--bg-surface);
+    border: 1px solid var(--border); border-radius: 8px;
+  }
+  .narrative h3 { font-size: 15px; margin-bottom: 10px; }
+  .narrative ul { padding-left: 20px; }
+  .narrative li { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+  .narrative li strong { color: var(--text-primary); }
+
+  /* ─── Sparkle icon ─── */
+  .sparkle { display: inline; }
+
+  /* ─── Theme-aware inline overrides ─── */
+  .t-muted { color: var(--text-muted) !important; }
+  .t-secondary { color: var(--text-secondary) !important; }
+  .t-faint { color: var(--text-faint) !important; }
+  .t-primary { color: var(--text-primary) !important; }
+  .t-blue { color: var(--blue) !important; }
+  .t-green { color: var(--green) !important; }
+  .t-purple { color: var(--purple) !important; }
+  .t-red { color: var(--red) !important; }
+  .bg-page { background: var(--bg-page) !important; }
+  .bg-surface { background: var(--bg-surface) !important; }
+  .bg-overlay { background: var(--bg-overlay) !important; }
+  .border-color { border-color: var(--border) !important; }
+  .border-subtle-color { border-color: var(--border-subtle) !important; }
+  .badge-blue { background: var(--blue-bg) !important; color: var(--blue) !important; border-color: var(--blue-border) !important; }
+  .badge-green { background: var(--green-bg) !important; color: var(--green) !important; border-color: var(--green-border) !important; }
+  .badge-purple { background: var(--purple-bg) !important; color: var(--purple) !important; border-color: var(--purple-border) !important; }
+  .copilot-avatar { background: var(--btn-blue-bg) !important; color: #fff !important; }
+  .progress-track { background: var(--border) !important; }
+  .progress-circle-pending { border-color: var(--border) !important; }
+  .progress-circle-active { border-color: var(--blue) !important; }
+  .progress-dot-active { background: var(--blue) !important; }
+  .gen-plan-banner { background: var(--purple-bg) !important; border-color: var(--purple-border) !important; }
+</style>
+</head>
+<body>
+
+<!-- ═══ Phase Navigation ═══ -->
+<div class="option-nav">
+  <button class="option-btn active" onclick="show('s1')">Step 1 — Spec with AI Chat</button>
+  <button class="option-btn" onclick="show('s2')">Step 2 — Generate Implementation Plan</button>
+  <button class="option-btn" onclick="show('s3')">Step 3 — Development in Progress</button>
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" id="theme-toggle-btn">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" id="theme-icon-dark" style="display:none;"><path d="M8 12a4 4 0 110-8 4 4 0 010 8zm0-1.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zm5.657-8.157a.75.75 0 010 1.06l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657 5.657a.75.75 0 01-1.06 0l-1.061-1.06a.75.75 0 111.06-1.061l1.061 1.06a.75.75 0 010 1.061zm-9.193-9.193a.75.75 0 01-1.06 0L2.343 3.404a.75.75 0 111.06-1.06l1.061 1.06a.75.75 0 010 1.06zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13z"/></svg>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" id="theme-icon-light"><path d="M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z"/></svg>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- STEP 1: New Issue Form with AI Chat Pane              -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="mockup-section active" id="section-s1">
+
+  <div class="gh-header">
+    <div class="breadcrumb">
+      <a href="#">github</a> / <a href="#">sub-issues</a> &nbsp;·&nbsp; <span>New Issue</span>
+    </div>
+  </div>
+
+  <div class="split-layout">
+    <!-- Left: Issue Form -->
+    <div class="main-pane">
+      <div class="form-section">
+        <div class="form-group">
+          <label class="form-label">Title</label>
+          <input class="form-input" value="Add expand/collapse all button for nested sub-issues" />
+        </div>
+
+        <div class="form-group">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+            <label class="form-label" style="margin:0;">Body</label>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-sm btn-outline" style="font-size:11px;">Write</button>
+              <button class="btn btn-sm btn-outline" style="font-size:11px;">Preview</button>
+            </div>
+          </div>
+          <textarea class="form-textarea" style="min-height: 420px;">## Problem
+
+When viewing a project board with hierarchy enabled, users with deeply nested sub-issues (3+ levels) must click each parent row individually to expand the tree. With complex task decompositions (epic → feature → task → sub-task), this becomes tedious and makes it hard to get a full picture of the project.
+
+## Proposed Solution
+
+Add an **Expand All / Collapse All** toggle button in the table header area of project board views that have hierarchy enabled.
+
+### Behavior
+- **Expand All**: Recursively expands every nested sub-issue level in the current view, eagerly fetching deeper levels not yet loaded
+- **Collapse All**: Collapses all expanded rows back to top-level items only
+- Button state toggles between expand/collapse based on current state
+- Works with the existing `memex_sub_issues_persist_expanded_state` feature flag — expanded-all state is persisted to session storage
+
+### Scope
+- **In scope**: Project board table view with hierarchy layout
+- **Out of scope**: Issue detail page sub-issues section (separate feature)
+
+### Edge Cases
+- Large hierarchies (100+ nested items): Show loading indicator during expand-all fetch
+- Mixed state (some expanded, some collapsed): "Expand All" expands remaining; "Collapse All" collapses everything
+- Filtered views: Only expand/collapse visible items matching current filter
+- Sort changes: Follow existing behavior from `memex_sub_issues_persist_expanded_state`
+
+## User Stories
+1. As a PM, I want to expand all sub-issues to see the full breakdown of work across my project
+2. As a developer, I want to collapse all sub-issues to get a high-level view after drilling into details
+
+## Acceptance Criteria
+- [ ] Expand/collapse all button visible in table header when hierarchy view is enabled
+- [ ] Expand all recursively fetches and displays all nested levels
+- [ ] Collapse all returns view to top-level items only
+- [ ] Loading state shown during expand-all network requests
+- [ ] Keyboard accessible (treegrid pattern per #883)
+- [ ] State persists to session storage when persist flag is enabled
+- [ ] Works correctly with sorting and filtering</textarea>
+        </div>
+      </div>
+
+      <div class="form-toolbar">
+        <button class="btn btn-primary">Create issue</button>
+        <button class="btn btn-secondary">Create as draft</button>
+        <div style="flex:1;"></div>
+        <span class="t-muted" style="font-size:12px;">Markdown supported</span>
+      </div>
+    </div>
+
+    <!-- Right: AI Chat Pane -->
+    <div class="chat-pane">
+      <div class="chat-header">
+        <svg width="18" height="18" viewBox="0 0 16 16" fill="#4493f8"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm0 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13z"/><circle cx="8" cy="8" r="3" fill="#4493f8"/></svg>
+        <span class="chat-header-title">Copilot Spec Assistant</span>
+        <span class="chat-header-badge">Powered by CLI</span>
+      </div>
+
+      <div class="chat-messages">
+        <!-- AI greeting -->
+        <div class="chat-msg">
+          <div class="chat-avatar chat-avatar-ai">C</div>
+          <div class="chat-bubble chat-bubble-ai">
+            I can see you're working on an expand/collapse all feature for nested sub-issues. I've scanned the <code>github/sub-issues</code> repo for context. Let me ask some questions to sharpen the spec.
+          </div>
+        </div>
+
+        <!-- AI Q1 -->
+        <div class="chat-msg">
+          <div class="chat-avatar chat-avatar-ai">C</div>
+          <div class="chat-bubble chat-bubble-ai">
+            <strong>Where should this button appear?</strong> I see hierarchy is currently in project board table views. Should it also show on the issue detail page sub-issues section?
+            <div class="suggestion-chips">
+              <span class="suggestion-chip">Project views only</span>
+              <span class="suggestion-chip">Issue page only</span>
+              <span class="suggestion-chip">Both</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User A1 -->
+        <div class="chat-msg user">
+          <div class="chat-avatar chat-avatar-user">EL</div>
+          <div class="chat-bubble chat-bubble-user">
+            Project board views only for now. Issue page can be a follow-up.
+          </div>
+        </div>
+
+        <!-- AI Q2 -->
+        <div class="chat-msg">
+          <div class="chat-avatar chat-avatar-ai">C</div>
+          <div class="chat-bubble chat-bubble-ai">
+            Got it. <strong>What about data fetching?</strong> Nested sub-issues are lazy-loaded — deeper levels aren't fetched until a parent is expanded. When a user clicks "Expand All":
+            <div class="suggestion-chips">
+              <span class="suggestion-chip">Eagerly fetch all levels</span>
+              <span class="suggestion-chip">Only expand already-loaded</span>
+              <span class="suggestion-chip">Progressive loading</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User A2 -->
+        <div class="chat-msg user">
+          <div class="chat-avatar chat-avatar-user">EL</div>
+          <div class="chat-bubble chat-bubble-user">
+            Eagerly fetch all levels, but show a loading indicator for large hierarchies.
+          </div>
+        </div>
+
+        <!-- AI Q3 -->
+        <div class="chat-msg">
+          <div class="chat-avatar chat-avatar-ai">C</div>
+          <div class="chat-bubble chat-bubble-ai">
+            Makes sense. I also found <strong>issue #883</strong> (keyboard expand/collapse with treegrid pattern) and the <code>memex_sub_issues_persist_expanded_state</code> flag. I'll add those as related context. <strong>Should expand-all state persist to session storage?</strong>
+            <div class="suggestion-chips">
+              <span class="suggestion-chip">Yes, persist it</span>
+              <span class="suggestion-chip">No, transient only</span>
+              <span class="suggestion-chip">Follow existing flag behavior</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User A3 -->
+        <div class="chat-msg user">
+          <div class="chat-avatar chat-avatar-user">EL</div>
+          <div class="chat-bubble chat-bubble-user">
+            Follow existing flag behavior.
+          </div>
+        </div>
+
+        <!-- AI updates spec -->
+        <div class="chat-msg">
+          <div class="chat-avatar chat-avatar-ai">C</div>
+          <div class="chat-bubble chat-bubble-ai">
+            I've updated the issue body with all your decisions. Here's what I added:
+            <div class="chat-action-applied">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="#3fb950"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
+              Updated issue body — scope, fetching strategy, edge cases, acceptance criteria
+            </div>
+            <div class="t-muted" style="margin-top:8px;font-size:12px;">
+              I also found 3 duplicate closed issues (#1076, #1077, #1078). This spec is more detailed. The issue body is ready to review — anything else to add?
+            </div>
+          </div>
+        </div>
+
+        <!-- User final -->
+        <div class="chat-msg user">
+          <div class="chat-avatar chat-avatar-user">EL</div>
+          <div class="chat-bubble chat-bubble-user">
+            Looks good, let's create it.
+          </div>
+        </div>
+
+        <!-- AI confirmation -->
+        <div class="chat-msg">
+          <div class="chat-avatar chat-avatar-ai">C</div>
+          <div class="chat-bubble chat-bubble-ai">
+            Ready! Click <strong>"Create issue"</strong> when you're set. After creation, you'll be able to generate an implementation plan directly from the issue page. 🚀
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat input -->
+      <div class="chat-input-area">
+        <div class="chat-input-wrapper">
+          <input class="chat-input" placeholder="Ask Copilot to refine the spec…" />
+          <button class="chat-send">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M.143 2.31a.75.75 0 011.048-.29l13.5 7.5a.75.75 0 010 1.308l-13.5 7.5a.75.75 0 01-1.087-.846L2.5 9.52H6.75a.75.75 0 000-1.5H2.5L.104 3.157a.75.75 0 01.04-.847z"/></svg>
+          </button>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+          <span class="t-faint" style="font-size:11px;">💡</span>
+          <span class="t-faint" style="font-size:11px;">Try: "Add a section about accessibility" or "What existing code is relevant?"</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout callout-blue">
+    <span style="font-size:18px;">✨</span>
+    <div>
+      <strong>New: Spec Assistant chat pane</strong> — When creating a new issue, an AI chat panel helps you write a thorough spec. It scans the repo for context (related issues, code patterns, feature flags), asks clarifying questions with suggestion chips, and updates the issue body in real-time as you answer.
+    </div>
+  </div>
+
+  <div class="narrative">
+    <h3>Step 1 Key Features</h3>
+    <ul>
+      <li><strong>Contextual AI chat:</strong> Copilot reads the target repo's issues, code, and feature flags to ask informed questions — not generic ones.</li>
+      <li><strong>Suggestion chips:</strong> Multiple-choice options for fast spec decisions, with freeform input always available.</li>
+      <li><strong>Live issue body updates:</strong> As you answer questions, the issue body is refined in real-time in the left pane. Changes are highlighted.</li>
+      <li><strong>Duplicate detection:</strong> AI identifies existing related/duplicate issues and surfaces them before creation.</li>
+      <li><strong>Powered by Copilot CLI:</strong> Same engine as the terminal agent, running in a chat widget.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- STEP 2: Issue Page with Implementation Plan            -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="mockup-section" id="section-s2">
+
+  <div class="gh-header">
+    <div class="breadcrumb">
+      <a href="#">github</a> / <a href="#">sub-issues</a> &nbsp;·&nbsp; <span>Issues</span> &nbsp;·&nbsp; <span>#1079</span>
+    </div>
+  </div>
+
+  <div class="split-layout-3col">
+    <div class="main-pane">
+      <!-- Issue header -->
+      <div class="issue-header-bar">
+        <div class="issue-title-row">
+          <span class="issue-title">Add expand/collapse all button for nested sub-issues</span>
+          <span class="issue-number">#1079</span>
+        </div>
+        <div class="issue-state-badge state-open">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg>
+          Open
+        </div>
+        <span class="t-muted" style="font-size:13px;margin-left:8px;">evi-liu opened 2 minutes ago</span>
+      </div>
+
+      <!-- Issue body (the spec) -->
+      <div class="md-preview" class="border-subtle-color" style="border-bottom:1px solid; padding-bottom:20px;">
+        <h2>Problem</h2>
+        <p>When viewing a project board with hierarchy enabled, users with deeply nested sub-issues (3+ levels) must click each parent row individually to expand the tree. With complex task decompositions, this becomes tedious.</p>
+        <h2>Proposed Solution</h2>
+        <p>Add an <strong>Expand All / Collapse All</strong> toggle button in the table header area of project board views that have hierarchy enabled.</p>
+        <h3>Behavior</h3>
+        <ul>
+          <li><strong>Expand All</strong>: Recursively expands every nested sub-issue level, eagerly fetching deeper levels</li>
+          <li><strong>Collapse All</strong>: Collapses all rows back to top-level items only</li>
+          <li>State persists to session storage when persist flag is enabled</li>
+        </ul>
+        <h3>Acceptance Criteria</h3>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Expand/collapse all button visible in table header when hierarchy view is enabled</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Expand all recursively fetches and displays all nested levels</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Loading state shown during expand-all network requests</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Keyboard accessible (treegrid pattern per #883)</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Works correctly with sorting and filtering</span></div>
+      </div>
+
+      <!-- Generate Plan CTA -->
+      <div class="border-subtle-color" style="padding:20px 24px; border-bottom:1px solid;">
+        <div class="gen-plan-banner" style="display:flex;align-items:center;justify-content:space-between; border-radius:8px; padding:16px 20px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="#a371f7"><path d="M7.998 14.5c2.832 0 5-1.98 5-4.5 0-1.463-.68-2.19-1.879-3.383l-.036-.037C9.865 5.343 8.66 4.1 8.16 2.5a.75.75 0 00-1.43.1c-.27 1.33-.997 2.377-1.51 3.09-.344.479-.596.747-.737.963C3.6 8.083 3 9.292 3 10.5c0 2.25 2.168 4 5 4zm0-12a.75.75 0 01.533.217c.398.39.756.756 1.091 1.14.322.37.636.765.918 1.2C11.2 5.944 12 7.117 12 8.5c0 3.24-2.75 5.5-6 5.5s-6-2.26-6-5.5c0-1.717.884-3.174 1.834-4.31.455-.545.947-1.028 1.371-1.435.19-.183.36-.347.51-.502A.75.75 0 018 2.5z"/></svg>
+            <div>
+              <div class="t-primary" style="font-size:14px;font-weight:600;">Generate Implementation Plan</div>
+              <div class="t-muted" style="font-size:12px;">Copilot will analyze the spec, scan the codebase, and create a step-by-step plan with file targets and complexity estimates.</div>
+            </div>
+          </div>
+          <button class="btn btn-purple" id="gen-plan-btn" onclick="showPlan()">
+            Generate Plan
+          </button>
+        </div>
+      </div>
+
+      <!-- Implementation plan (revealed on click) -->
+      <div id="plan-container" style="display:none;">
+        <div class="plan-section">
+          <div class="plan-header">
+            <div class="plan-header-left">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="#a371f7"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+              <span class="plan-header-title">Implementation Plan</span>
+              <span class="plan-header-badge">5 tasks · ~3 days est.</span>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-sm btn-outline">Edit</button>
+              <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
+            </div>
+          </div>
+          <div class="plan-body">
+
+            <div class="plan-task">
+              <input type="checkbox" class="plan-task-check" disabled />
+              <div class="plan-task-content">
+                <div class="plan-task-title">1. Add ExpandCollapseAllButton component</div>
+                <div class="plan-task-desc">Create a new React component that renders the expand/collapse toggle icon in the table header. Wire it to hierarchy view state — only visible when <code>hierarchyEnabled</code> is true.</div>
+                <div class="plan-task-meta">
+                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/components/table/</span>
+                  <span class="plan-task-tag tag-complexity-low">◆ Low</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="plan-task">
+              <input type="checkbox" class="plan-task-check" disabled />
+              <div class="plan-task-content">
+                <div class="plan-task-title">2. Implement recursive expand/fetch logic</div>
+                <div class="plan-task-desc">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state in session storage. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid #1074 (over-requesting).</div>
+                <div class="plan-task-meta">
+                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/hooks/</span>
+                  <span class="plan-task-tag tag-complexity-high">◆ High</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="plan-task">
+              <input type="checkbox" class="plan-task-check" disabled />
+              <div class="plan-task-content">
+                <div class="plan-task-title">3. Add loading state for large hierarchy expansion</div>
+                <div class="plan-task-desc">Show a progress indicator (skeleton rows or spinner) when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per #1060.</div>
+                <div class="plan-task-meta">
+                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/components/table/</span>
+                  <span class="plan-task-tag tag-complexity-med">◆ Medium</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="plan-task">
+              <input type="checkbox" class="plan-task-check" disabled />
+              <div class="plan-task-content">
+                <div class="plan-task-title">4. Integrate with sorting, filtering, and persist state</div>
+                <div class="plan-task-desc">Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code> so expand-all is saved/restored. Handle #1071 sort-change flash.</div>
+                <div class="plan-task-meta">
+                  <span class="plan-task-tag tag-files">📁 packages/memex/src/client/state-providers/</span>
+                  <span class="plan-task-tag tag-complexity-med">◆ Medium</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="plan-task">
+              <input type="checkbox" class="plan-task-check" disabled />
+              <div class="plan-task-content">
+                <div class="plan-task-title">5. Keyboard accessibility & tests</div>
+                <div class="plan-task-desc">Add keyboard shortcut for expand/collapse all (per treegrid pattern #883). Add Vitest/browser tests covering: expand-all on 3-level hierarchy, collapse-all, expand-all with filters active, session storage persistence.</div>
+                <div class="plan-task-meta">
+                  <span class="plan-task-tag tag-files">📁 packages/memex/src/tests/</span>
+                  <span class="plan-task-tag tag-complexity-med">◆ Medium</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="callout callout-purple">
+          <span style="font-size:16px;">💡</span>
+          <div>
+            <strong>Codebase-aware plan:</strong> Copilot identified relevant files (<code>useSubIssueExpansion</code>, table components), related open issues (#1074 over-requesting, #1071 sort flash, #883 keyboard), and the persist-state feature flag. Click <strong>"Convert to sub-issues"</strong> to turn each task into a trackable sub-issue.
+          </div>
+        </div>
+      </div>
+
+      <!-- Comments & Timeline -->
+      <div style="padding:20px 24px;border-top:1px solid var(--border-subtle);">
+        <div class="t-muted" style="font-size:13px;font-weight:600;margin-bottom:16px;">Activity</div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--bg-overlay);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-primary);flex-shrink:0;">EL</div>
+            <div style="flex:1;">
+              <div style="font-size:13px;"><strong>evi-liu</strong> <span class="t-muted">opened this issue 2 minutes ago</span></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div class="copilot-avatar" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">C</div>
+            <div style="flex:1;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:12px;">
+              <div style="font-size:13px;margin-bottom:6px;"><strong>copilot</strong> <span class="t-muted">generated an implementation plan just now</span></div>
+              <div class="t-secondary" style="font-size:12px;">Created 5 tasks based on the spec. Identified <code style="font-size:11px;">useSubIssueExpansion</code>, table header components, and 3 related open issues as relevant context.</div>
+            </div>
+          </div>
+        </div>
+        <!-- Comment input -->
+        <div style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--bg-overlay);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-primary);flex-shrink:0;">EL</div>
+          <div style="flex:1;">
+            <textarea class="form-textarea" style="min-height:80px;" placeholder="Leave a comment…"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+              <button class="btn btn-primary btn-sm">Comment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right sidebar -->
+    <div class="bg-page" style="padding:0;">
+      <div class="sidebar-fields">
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Assignees</div>
+          <div class="sidebar-field-value" class="t-muted" style="">None yet — generate plan first</div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Labels</div>
+          <div class="sidebar-field-value">
+            <span class="badge-purple" style="font-size:12px;padding:2px 8px;border-radius:10px;">enhancement</span>
+            <span class="badge-blue" style="font-size:12px;padding:2px 8px;border-radius:10px;">nested-sub-issues</span>
+          </div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Project</div>
+          <div class="sidebar-field-value"><a href="#">Sub-issues GA</a></div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Milestone</div>
+          <div class="sidebar-field-value"><a href="#">GA Release</a></div>
+        </div>
+      </div>
+      <div class="sidebar-fields" style="border-bottom:none;">
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Related Issues</div>
+          <div class="t-muted" style="font-size:12px;display:flex;flex-direction:column;gap:4px;">
+            <a href="#" class="t-blue" style="text-decoration:none;font-size:12px;">#883 Keyboard expand/collapse</a>
+            <a href="#" class="t-blue" style="text-decoration:none;font-size:12px;">#1071 Polish for sort + persist state</a>
+            <a href="#" class="t-blue" style="text-decoration:none;font-size:12px;">#1074 Fix over-requesting sub-issues</a>
+            <a href="#" class="t-muted" style="text-decoration:none;font-size:12px;text-decoration:line-through;">#1078 (duplicate, closed)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Development (revealed after plan generation) -->
+      <div id="sidebar-dev" class="sidebar-fields" style="border-bottom:none;display:none;">
+        <div class="sidebar-field">
+          <div class="sidebar-field-label" style="display:flex;align-items:center;gap:6px;">
+            Start Development
+            <span class="badge-green" style="font-size:10px;padding:1px 6px;border-radius:8px;">Ready</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
+            <button class="btn btn-sm btn-blue" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 110 16A8 8 0 018 0zm0 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13z"/><path d="M5.5 5a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM8 9.5c-2.5 0-3.5.75-3.5 1.25V11h7v-.25c0-.5-1-1.25-3.5-1.25z"/></svg>
+              Assign to Copilot Agent
+            </button>
+            <button class="btn btn-sm btn-outline" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75zM7 5.25a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5A.75.75 0 017 5.25zm.75 2.75a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM3.5 4.75a.75.75 0 011.06 0l.97.97.97-.97a.75.75 0 011.06 1.06l-.97.97.97.97a.75.75 0 01-1.06 1.06l-.97-.97-.97.97a.75.75 0 01-1.06-1.06l.97-.97-.97-.97a.75.75 0 010-1.06z"/></svg>
+              Start Local Session
+            </button>
+            <button class="btn btn-sm btn-outline" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M10.561 8.073a6.005 6.005 0 013.432 5.142.75.75 0 11-1.498.07 4.5 4.5 0 00-8.99 0 .75.75 0 01-1.498-.07 6.005 6.005 0 013.432-5.142 3.999 3.999 0 115.122 0zM10.5 5a2.5 2.5 0 10-5 0 2.5 2.5 0 005 0z"/></svg>
+              Assign to Team Member
+            </button>
+          </div>
+          <div style="margin-top:8px;">
+            <div class="cli-snippet" style="font-size:11px;padding:8px 10px;">
+              <span class="cli-prompt">$</span> <span class="cli-cmd">copilot</span> <span class="cli-flag">--issue</span> <span class="cli-cmd">1079</span> <span class="cli-flag">--plan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="narrative">
+    <h3>Step 2 Key Features</h3>
+    <ul>
+      <li><strong>One-click plan generation:</strong> "Generate Plan" button appears on any issue with a spec. Copilot reads the spec, scans the codebase, and produces an actionable implementation plan.</li>
+      <li><strong>Codebase-aware tasks:</strong> Each task references specific files/directories and is scoped to the actual code architecture (hooks, components, state providers).</li>
+      <li><strong>Related issue linking:</strong> Plan automatically cross-references open issues that the implementation needs to account for.</li>
+      <li><strong>Complexity estimates:</strong> Low/Medium/High tags help with sizing and assignment decisions.</li>
+      <li><strong>"Convert to sub-issues" button:</strong> One click turns the plan into trackable sub-issues linked to the parent.</li>
+      <li><strong>Editable plan:</strong> The plan is a living document — edit it before or after converting to sub-issues.</li>
+      <li><strong>Sidebar "Start Development":</strong> After generating a plan, the sidebar reveals options to assign a cloud agent, start a local CLI session, or assign a team member — no extra tab needed.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- STEP 3: Development in Progress — Agent Working         -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="mockup-section" id="section-s3">
+
+  <div class="gh-header">
+    <div class="breadcrumb">
+      <a href="#">github</a> / <a href="#">sub-issues</a> &nbsp;·&nbsp; <span>Issues</span> &nbsp;·&nbsp; <span>#1079</span>
+    </div>
+  </div>
+
+  <div class="split-layout-3col">
+    <div class="main-pane">
+      <!-- Issue header -->
+      <div class="issue-header-bar">
+        <div class="issue-title-row">
+          <span class="issue-title">Add expand/collapse all button for nested sub-issues</span>
+          <span class="issue-number">#1079</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+          <div class="issue-state-badge state-open">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="4"/></svg>
+            Open
+          </div>
+          <span class="t-muted" style="font-size:13px;">evi-liu opened 12 minutes ago</span>
+        </div>
+      </div>
+
+      <!-- Agent working banner -->
+      <div style="padding:20px 24px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <div class="copilot-avatar" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">C</div>
+          <span style="font-size:14px;font-weight:600;">Copilot is working on this issue</span>
+          <span class="badge-blue" style="font-size:11px;padding:2px 8px;border-radius:10px;">
+            <span class="progress-dot-active" style="display:inline-block;width:5px;height:5px;border-radius:50%;animation:pulse 1.5s infinite;vertical-align:middle;margin-right:4px;"></span>
+            Working
+          </span>
+        </div>
+      </div>
+
+      <div class="plan-section">
+        <div class="plan-header">
+          <div class="plan-header-left">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="#a371f7"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+            <span class="plan-header-title">Implementation Plan</span>
+            <span class="plan-header-badge">2 of 5 complete</span>
+          </div>
+          <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
+        </div>
+        <div class="plan-body">
+
+          <!-- Task 1: Done -->
+          <div class="plan-task">
+            <input type="checkbox" class="plan-task-check" checked disabled />
+            <div class="plan-task-content">
+              <div class="plan-task-title" class="t-green" style="">1. Add ExpandCollapseAllButton component</div>
+              <div class="plan-task-desc">Create a new React component that renders the expand/collapse toggle icon in the table header.</div>
+              <div class="plan-task-meta">
+                <span class="plan-task-tag tag-files">packages/memex/src/client/components/table/</span>
+                <span class="plan-task-tag tag-complexity-low">Low</span>
+                <span class="plan-task-tag" class="badge-green" style="">2m 14s</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Task 2: Done -->
+          <div class="plan-task">
+            <input type="checkbox" class="plan-task-check" checked disabled />
+            <div class="plan-task-content">
+              <div class="plan-task-title" class="t-green" style="">2. Implement recursive expand/fetch logic</div>
+              <div class="plan-task-desc">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> and <code>collapseAll()</code>.</div>
+              <div class="plan-task-meta">
+                <span class="plan-task-tag tag-files">packages/memex/src/client/hooks/</span>
+                <span class="plan-task-tag tag-complexity-high">High</span>
+                <span class="plan-task-tag" class="badge-green" style="">8m 41s</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Task 3: In Progress -->
+          <div class="plan-task" style="background:var(--blue-bg);border-radius:6px;padding:10px;margin:0 -10px;">
+            <div class="progress-circle-active" style="width:16px;height:16px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;margin-top:2px;flex-shrink:0;">
+              <div class="progress-dot-active" style="width:6px;height:6px;border-radius:50%;animation:pulse 1.5s infinite;"></div>
+            </div>
+            <div class="plan-task-content">
+              <div class="plan-task-title" class="t-blue" style="">3. Add loading state for large hierarchy expansion</div>
+              <div class="plan-task-desc">Show a progress indicator when expand-all triggers multiple network fetches. Debounce renders.</div>
+              <div class="plan-task-meta">
+                <span class="plan-task-tag tag-files">packages/memex/src/client/components/table/</span>
+                <span class="plan-task-tag tag-complexity-med">Medium</span>
+                <span class="plan-task-tag" class="badge-blue" style="">working...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Task 4: Pending -->
+          <div class="plan-task">
+            <div class="progress-circle-pending" style="width:16px;height:16px;border-radius:50%;border:2px solid;margin-top:2px;flex-shrink:0;"></div>
+            <div class="plan-task-content">
+              <div class="plan-task-title" class="t-muted" style="">4. Integrate with sorting, filtering, and persist state</div>
+              <div class="plan-task-desc" class="t-faint" style="">Ensure expand-all respects active filters. Integrate with persist-state flag.</div>
+              <div class="plan-task-meta">
+                <span class="plan-task-tag tag-files" style="opacity:0.5;">packages/memex/src/client/state-providers/</span>
+                <span class="plan-task-tag tag-complexity-med" style="opacity:0.5;">Medium</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Task 5: Pending -->
+          <div class="plan-task">
+            <div class="progress-circle-pending" style="width:16px;height:16px;border-radius:50%;border:2px solid;margin-top:2px;flex-shrink:0;"></div>
+            <div class="plan-task-content">
+              <div class="plan-task-title" class="t-muted" style="">5. Keyboard accessibility & tests</div>
+              <div class="plan-task-desc" class="t-faint" style="">Add keyboard shortcut and tests for expand/collapse all.</div>
+              <div class="plan-task-meta">
+                <span class="plan-task-tag tag-files" style="opacity:0.5;">packages/memex/src/tests/</span>
+                <span class="plan-task-tag tag-complexity-med" style="opacity:0.5;">Medium</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Activity -->
+      <div style="padding:20px 24px;border-top:1px solid var(--border-subtle);">
+        <div class="t-muted" style="font-size:13px;font-weight:600;margin-bottom:16px;">Activity</div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--bg-overlay);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-primary);flex-shrink:0;">EL</div>
+            <div style="font-size:13px;"><strong>evi-liu</strong> <span class="t-muted">opened this issue 12 minutes ago</span></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div class="copilot-avatar" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">C</div>
+            <div style="font-size:13px;"><strong>copilot</strong> <span class="t-muted">was assigned 10 minutes ago</span></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start;">
+            <div class="copilot-avatar" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">C</div>
+            <div style="flex:1;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:12px;">
+              <div style="font-size:13px;margin-bottom:8px;"><strong>copilot</strong> <span class="t-muted">posted an update just now</span></div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
+                  <span class="t-green" style="">Created <code style="font-size:11px;">ExpandCollapseAllButton.tsx</code></span>
+                  <span class="t-faint" style="">2m 14s</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
+                  <span class="t-green" style="">Extended <code style="font-size:11px;">useSubIssueExpansion</code> with <code style="font-size:11px;">expandAll()</code></span>
+                  <span class="t-faint" style="">8m 41s</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:12px;">
+                  <div class="progress-circle-active" style="width:14px;height:14px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;">
+                    <div class="progress-dot-active" style="width:4px;height:4px;border-radius:50%;animation:pulse 1.5s infinite;"></div>
+                  </div>
+                  <span class="t-blue" style="">Working on loading state for large hierarchies...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Comment input -->
+        <div style="display:flex;gap:10px;align-items:flex-start;margin-top:16px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--bg-overlay);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-primary);flex-shrink:0;">EL</div>
+          <div style="flex:1;">
+            <textarea class="form-textarea" style="min-height:80px;" placeholder="Leave a comment…"></textarea>
+            <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+              <button class="btn btn-primary btn-sm">Comment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right sidebar: Development Status -->
+    <div class="bg-page" style="">
+      <div class="sidebar-fields">
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Assignees</div>
+          <div class="sidebar-field-value">
+            <div class="copilot-avatar" style="width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;">C</div>
+            <span class="t-blue" style="">copilot</span>
+            <span class="badge-blue" style="font-size:11px;padding:2px 6px;border-radius:8px;">agent</span>
+          </div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Labels</div>
+          <div class="sidebar-field-value">
+            <span class="badge-purple" style="font-size:12px;padding:2px 8px;border-radius:10px;">enhancement</span>
+            <span class="badge-blue" style="font-size:12px;padding:2px 8px;border-radius:10px;">nested-sub-issues</span>
+          </div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Project</div>
+          <div class="sidebar-field-value"><a href="#">Sub-issues GA</a></div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Milestone</div>
+          <div class="sidebar-field-value"><a href="#">GA Release</a></div>
+        </div>
+      </div>
+
+      <!-- Development section in sidebar -->
+      <div class="sidebar-fields">
+        <div class="sidebar-field">
+          <div class="sidebar-field-label" style="display:flex;align-items:center;gap:6px;">
+            Development
+            <span class="badge-blue" style="font-size:10px;padding:1px 6px;border-radius:8px;">
+              <span class="progress-dot-active" style="display:inline-block;width:4px;height:4px;border-radius:50%;animation:pulse 1.5s infinite;vertical-align:middle;margin-right:3px;"></span>
+              Active
+            </span>
+          </div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Mode</div>
+          <div class="sidebar-field-value" style="font-size:12px;">
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="#4493f8"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+            Copilot Agent (Cloud)
+          </div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Branch</div>
+          <div class="sidebar-field-value"><code class="t-primary" style="font-size:11px;">copilot/1079-expand-collapse-all</code></div>
+        </div>
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Plan Progress</div>
+          <div style="margin-top:6px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <div class="progress-track" style="flex:1;height:6px;border-radius:3px;overflow:hidden;">
+                <div style="width:50%;height:100%;background:linear-gradient(90deg,var(--green) 80%,var(--blue) 100%);border-radius:3px;transition:width 0.5s;"></div>
+              </div>
+              <span class="t-secondary" style="font-size:11px;">2.5/5</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="#3fb950"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
+                <span class="t-green" style="">Task 1</span>
+                <span class="t-faint" style="">2m 14s</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="#3fb950"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
+                <span class="t-green" style="">Task 2</span>
+                <span class="t-faint" style="">8m 41s</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+                <div class="progress-circle-active" style="width:12px;height:12px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;">
+                  <div class="progress-dot-active" style="width:4px;height:4px;border-radius:50%;animation:pulse 1.5s infinite;"></div>
+                </div>
+                <span class="t-blue" style="">Task 3</span>
+                <span class="t-faint" style="">working...</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+                <div class="progress-circle-pending" style="width:12px;height:12px;border-radius:50%;border:2px solid;"></div>
+                <span class="t-faint" style="">Task 4</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px;font-size:11px;">
+                <div class="progress-circle-pending" style="width:12px;height:12px;border-radius:50%;border:2px solid;"></div>
+                <span class="t-faint" style="">Task 5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-field" style="margin-top:4px;">
+          <div class="sidebar-field-label">Elapsed</div>
+          <div class="sidebar-field-value" class="t-secondary" style="font-size:12px;">12m 38s</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="sidebar-fields" style="border-bottom:none;">
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Actions</div>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:6px;">
+            <button class="btn btn-sm btn-outline" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75zM7 5.25a.75.75 0 01.75-.75h4.5a.75.75 0 010 1.5h-4.5A.75.75 0 017 5.25zm.75 2.75a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM3.5 4.75a.75.75 0 011.06 0l.97.97.97-.97a.75.75 0 011.06 1.06l-.97.97.97.97a.75.75 0 01-1.06 1.06l-.97-.97-.97.97a.75.75 0 01-1.06-1.06l.97-.97-.97-.97a.75.75 0 010-1.06z"/></svg>
+              Take over locally
+            </button>
+            <button class="btn btn-sm btn-outline" class="t-red" style="width:100%;text-align:left;display:flex;align-items:center;gap:8px;padding:8px 10px;">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="#f85149"><path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/></svg>
+              Stop agent
+            </button>
+          </div>
+          <div style="margin-top:10px;">
+            <div class="sidebar-field-label">Local Session</div>
+            <div class="cli-snippet" style="font-size:11px;padding:8px 10px;margin-top:4px;">
+              <span class="cli-prompt">$</span> <span class="cli-cmd">copilot</span> <span class="cli-flag">--issue</span> <span class="cli-cmd">1079</span> <span class="cli-flag">--plan</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Issues -->
+      <div class="sidebar-fields" style="border-bottom:none;">
+        <div class="sidebar-field">
+          <div class="sidebar-field-label">Related Issues</div>
+          <div class="t-muted" style="font-size:12px;display:flex;flex-direction:column;gap:4px;">
+            <a href="#" class="t-blue" style="text-decoration:none;font-size:12px;">#883 Keyboard expand/collapse</a>
+            <a href="#" class="t-blue" style="text-decoration:none;font-size:12px;">#1074 Fix over-requesting sub-issues</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="narrative">
+    <h3>Step 3 Key Features</h3>
+    <ul>
+      <li><strong>Sidebar-driven development:</strong> All development status — mode, branch, progress, elapsed time, actions — lives in the right sidebar, keeping the main content area focused on the plan and agent activity.</li>
+      <li><strong>Task-by-task progress:</strong> The sidebar shows a compact progress tracker with completion times per task. The main area shows the full plan with in-progress highlighting.</li>
+      <li><strong>Agent activity feed:</strong> Below the plan, a timeline of what the agent is doing — files created, hooks extended, issues referenced.</li>
+      <li><strong>Seamless handoff:</strong> "Take over locally" generates a CLI command that picks up where the agent left off. "Stop agent" halts cloud execution.</li>
+      <li><strong>No tab switching:</strong> Development status is always visible in the sidebar regardless of which content tab (Spec, Plan, Comments) is active.</li>
+    </ul>
+  </div>
+</div>
+
+
+<style>
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+</style>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.mockup-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+function showPlan() {
+  document.getElementById('plan-container').style.display = 'block';
+  document.getElementById('gen-plan-btn').textContent = 'Plan Generated';
+  document.getElementById('gen-plan-btn').style.background = 'var(--btn-primary-bg)';
+  document.getElementById('gen-plan-btn').style.borderColor = 'var(--btn-primary-border)';
+  document.getElementById('gen-plan-btn').disabled = true;
+  document.getElementById('sidebar-dev').style.display = 'block';
+  document.getElementById('plan-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function toggleTheme() {
+  document.documentElement.classList.toggle('light');
+  var isLight = document.documentElement.classList.contains('light');
+  document.getElementById('theme-icon-light').style.display = isLight ? 'none' : 'block';
+  document.getElementById('theme-icon-dark').style.display = isLight ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
