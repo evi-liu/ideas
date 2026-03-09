@@ -903,64 +903,56 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
         </div>
       </div>
 
-      <!-- Agent working banner -->
-      <div style="padding:20px 24px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-          <div class="copilot-avatar" style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">C</div>
-          <span style="font-size:14px;font-weight:600;">Copilot is working on this issue</span>
-          <span class="badge-blue" style="font-size:11px;padding:2px 8px;border-radius:10px;">
-            <span class="progress-dot-active" style="display:inline-block;width:5px;height:5px;border-radius:50%;animation:pulse 1.5s infinite;vertical-align:middle;margin-right:4px;"></span>
-            Working
-          </span>
-        </div>
+      <!-- Issue body (the spec) — same as Step 2 -->
+      <div class="md-preview" style="border-bottom:1px solid var(--border-subtle); padding-bottom:20px;">
+        <h2>Problem</h2>
+        <p>When viewing a project board with hierarchy enabled, users with deeply nested sub-issues (3+ levels) must click each parent row individually to expand the tree. With complex task decompositions, this becomes tedious.</p>
+        <h2>Proposed Solution</h2>
+        <p>Add an <strong>Expand All / Collapse All</strong> toggle button in the table header area of project board views that have hierarchy enabled.</p>
+        <h3>Behavior</h3>
+        <ul>
+          <li><strong>Expand All</strong>: Recursively expands every nested sub-issue level, eagerly fetching deeper levels</li>
+          <li><strong>Collapse All</strong>: Collapses all rows back to top-level items only</li>
+          <li>State persists to session storage when persist flag is enabled</li>
+        </ul>
+        <h3>Acceptance Criteria</h3>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Expand/collapse all button visible in table header when hierarchy view is enabled</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Expand all recursively fetches and displays all nested levels</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Loading state shown during expand-all network requests</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Keyboard accessible (treegrid pattern per #883)</span></div>
+        <div class="checkbox"><input type="checkbox" disabled /> <span>Works correctly with sorting and filtering</span></div>
       </div>
 
-      <div class="md-preview" style="padding-bottom:0;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <h2 style="margin:0;">Implementation Plan</h2>
-          <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
+      <!-- Implementation plan — same as Step 2 (already generated) -->
+      <div style="padding:0 24px 20px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+          <h2 style="font-size:18px;font-weight:600;margin:20px 0 8px;">Implementation Plan</h2>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-sm btn-outline">Edit</button>
+            <button class="btn btn-sm btn-outline">Convert to sub-issues</button>
+          </div>
         </div>
-        <p class="t-secondary" style="margin-bottom:16px;">2 of 5 tasks complete</p>
+        <p class="t-secondary" style="font-size:14px;margin-bottom:16px;">5 tasks · estimated ~3 days · generated from spec and codebase analysis</p>
 
-        <h3 style="display:flex;align-items:center;gap:8px;">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
-          <span class="t-green" style="text-decoration:line-through;font-weight:500;">1. Add ExpandCollapseAllButton component</span>
-          <span class="t-faint" style="font-size:12px;font-weight:400;">2m 14s</span>
-        </h3>
-        <p class="t-muted" style="margin-bottom:4px;">Create a new React component that renders the expand/collapse toggle icon in the table header.</p>
+        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">1. Add ExpandCollapseAllButton component</h3>
+        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Create a new React component that renders the expand/collapse toggle icon in the table header. Wire it to hierarchy view state — only visible when <code>hierarchyEnabled</code> is true.</p>
         <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Low</p>
 
-        <h3 style="display:flex;align-items:center;gap:8px;">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M8 16A8 8 0 108 0a8 8 0 000 16zm3.78-9.72a.75.75 0 00-1.06-1.06L6.75 9.19 5.28 7.72a.75.75 0 00-1.06 1.06l2 2a.75.75 0 001.06 0l4.5-4.5z"/></svg>
-          <span class="t-green" style="text-decoration:line-through;font-weight:500;">2. Implement recursive expand/fetch logic</span>
-          <span class="t-faint" style="font-size:12px;font-weight:400;">8m 41s</span>
-        </h3>
-        <p class="t-muted" style="margin-bottom:4px;">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> and <code>collapseAll()</code>.</p>
+        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">2. Implement recursive expand/fetch logic</h3>
+        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Extend <code>useSubIssueExpansion</code> hook to support <code>expandAll()</code> — recursively walk tree, trigger lazy fetches for unloaded children, update expansion state in session storage. Add <code>collapseAll()</code> to reset. Handle concurrent fetch coordination to avoid <a href="#" style="color:var(--blue);text-decoration:none;">#1074</a> (over-requesting).</p>
         <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/hooks/</code> · Complexity: High</p>
 
-        <h3 style="display:flex;align-items:center;gap:8px;padding:8px 0;background:var(--blue-bg);border-radius:6px;padding:6px 8px;margin-left:-8px;margin-right:-8px;">
-          <div class="progress-circle-active" style="width:14px;height:14px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;">
-            <div class="progress-dot-active" style="width:4px;height:4px;border-radius:50%;animation:pulse 1.5s infinite;"></div>
-          </div>
-          <span class="t-blue" style="font-weight:500;">3. Add loading state for large hierarchy expansion</span>
-          <span class="t-faint" style="font-size:12px;font-weight:400;">working...</span>
-        </h3>
-        <p class="t-secondary" style="margin-bottom:4px;">Show a progress indicator when expand-all triggers multiple network fetches. Debounce renders.</p>
+        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">3. Add loading state for large hierarchy expansion</h3>
+        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Show a progress indicator (skeleton rows or spinner) when expand-all triggers multiple network fetches. Debounce renders to avoid layout shift per <a href="#" style="color:var(--blue);text-decoration:none;">#1060</a>.</p>
         <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/components/table/</code> · Complexity: Medium</p>
 
-        <h3 style="display:flex;align-items:center;gap:8px;">
-          <div class="progress-circle-pending" style="width:14px;height:14px;border-radius:50%;border:2px solid;"></div>
-          <span class="t-muted" style="font-weight:500;">4. Integrate with sorting, filtering, and persist state</span>
-        </h3>
-        <p class="t-faint" style="margin-bottom:4px;">Ensure expand-all respects active filters. Integrate with persist-state flag.</p>
-        <p class="t-faint" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/state-providers/</code> · Complexity: Medium</p>
+        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">4. Integrate with sorting, filtering, and persist state</h3>
+        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Ensure expand-all respects active filters (only expand visible rows). Integrate with <code>memex_sub_issues_persist_expanded_state</code> so expand-all is saved/restored. Handle <a href="#" style="color:var(--blue);text-decoration:none;">#1071</a> sort-change flash.</p>
+        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/client/state-providers/</code> · Complexity: Medium</p>
 
-        <h3 style="display:flex;align-items:center;gap:8px;">
-          <div class="progress-circle-pending" style="width:14px;height:14px;border-radius:50%;border:2px solid;"></div>
-          <span class="t-muted" style="font-weight:500;">5. Keyboard accessibility &amp; tests</span>
-        </h3>
-        <p class="t-faint" style="margin-bottom:4px;">Add keyboard shortcut and tests for expand/collapse all.</p>
-        <p class="t-faint" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/tests/</code> · Complexity: Medium</p>
+        <h3 style="font-size:15px;font-weight:600;margin:16px 0 6px;">5. Keyboard accessibility &amp; tests</h3>
+        <p class="t-secondary" style="font-size:14px;margin-bottom:4px;">Add keyboard shortcut for expand/collapse all (per treegrid pattern <a href="#" style="color:var(--blue);text-decoration:none;">#883</a>). Add Vitest/browser tests covering: expand-all on 3-level hierarchy, collapse-all, expand-all with filters active, session storage persistence.</p>
+        <p class="t-muted" style="font-size:13px;margin-bottom:12px;">Files: <code>packages/memex/src/tests/</code> · Complexity: Medium</p>
       </div>
 
       <!-- Activity -->
