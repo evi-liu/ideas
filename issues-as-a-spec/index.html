@@ -920,42 +920,28 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
             <span class="badge-green" style="font-size:10px;padding:1px 6px;border-radius:8px;">Ready</span>
           </div>
 
-          <!-- Cloud coding agent with provider dropdown -->
-          <div style="margin-top:8px;">
-            <div class="t-muted" style="font-size:11px;font-weight:500;margin-bottom:4px;">Cloud coding agent</div>
-            <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);background:var(--blue-bg);">
-                <input type="radio" name="cloud-agent" checked style="accent-color:var(--blue);margin:0;" />
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
-                <span style="font-size:13px;font-weight:500;">Copilot</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);">
-                <input type="radio" name="cloud-agent" style="accent-color:var(--blue);margin:0;" />
-                <span style="font-size:13px;font-weight:500;">Claude</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;">
-                <input type="radio" name="cloud-agent" style="accent-color:var(--blue);margin:0;" />
-                <span style="font-size:13px;font-weight:500;">Codex</span>
-              </label>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
+            <!-- Cloud coding agent split button -->
+            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+                Assign to Copilot
+              </button>
+              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+              </button>
             </div>
-            <button class="btn btn-sm btn-blue" style="width:100%;margin-top:6px;">Assign</button>
-          </div>
 
-          <!-- Local session with provider dropdown -->
-          <div style="margin-top:14px;">
-            <div class="t-muted" style="font-size:11px;font-weight:500;margin-bottom:4px;">Local session</div>
-            <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);background:var(--blue-bg);">
-                <input type="radio" name="local-session" checked style="accent-color:var(--blue);margin:0;" />
+            <!-- Local session split button -->
+            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75z"/></svg>
-                <span style="font-size:13px;font-weight:500;">Copilot CLI</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;">
-                <input type="radio" name="local-session" style="accent-color:var(--blue);margin:0;" />
-                <span style="font-size:13px;font-weight:500;">Claude Code</span>
-              </label>
+                Start with Copilot CLI
+              </button>
+              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+              </button>
             </div>
-            <button class="btn btn-sm btn-outline" style="width:100%;margin-top:6px;">Start session</button>
           </div>
         </div>
       </div>
@@ -1142,42 +1128,28 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
             Start Development
           </div>
 
-          <!-- Cloud coding agent with provider dropdown -->
-          <div style="margin-top:8px;">
-            <div class="t-muted" style="font-size:11px;font-weight:500;margin-bottom:4px;">Cloud coding agent</div>
-            <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);background:var(--blue-bg);">
-                <input type="radio" name="cloud-agent-s3" checked style="accent-color:var(--blue);margin:0;" />
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
-                <span style="font-size:13px;font-weight:500;">Copilot</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);">
-                <input type="radio" name="cloud-agent-s3" style="accent-color:var(--blue);margin:0;" />
-                <span style="font-size:13px;font-weight:500;">Claude</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;">
-                <input type="radio" name="cloud-agent-s3" style="accent-color:var(--blue);margin:0;" />
-                <span style="font-size:13px;font-weight:500;">Codex</span>
-              </label>
+          <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
+            <!-- Cloud coding agent split button -->
+            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+                Assign to Copilot
+              </button>
+              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+              </button>
             </div>
-            <button class="btn btn-sm btn-blue" style="width:100%;margin-top:6px;">Assign</button>
-          </div>
 
-          <!-- Local session with provider dropdown -->
-          <div style="margin-top:14px;">
-            <div class="t-muted" style="font-size:11px;font-weight:500;margin-bottom:4px;">Local session</div>
-            <div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;">
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-bottom:1px solid var(--border);background:var(--blue-bg);">
-                <input type="radio" name="local-session-s3" checked style="accent-color:var(--blue);margin:0;" />
+            <!-- Local session split button -->
+            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75z"/></svg>
-                <span style="font-size:13px;font-weight:500;">Copilot CLI</span>
-              </label>
-              <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;">
-                <input type="radio" name="local-session-s3" style="accent-color:var(--blue);margin:0;" />
-                <span style="font-size:13px;font-weight:500;">Claude Code</span>
-              </label>
+                Start with Copilot CLI
+              </button>
+              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+              </button>
             </div>
-            <button class="btn btn-sm btn-outline" style="width:100%;margin-top:6px;">Start session</button>
           </div>
         </div>
       </div>
