@@ -450,6 +450,37 @@
   }
   .plan-iterate-send:hover { color: var(--text-primary); }
 
+  /* ─── Split button dropdown ─── */
+  .split-btn-wrapper { position: relative; }
+  .split-btn { display:flex;border:1px solid var(--border);border-radius:6px;overflow:visible; }
+  .split-btn-main {
+    flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;
+    background:var(--bg-surface);border:none;color:var(--text-primary);
+    font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;
+    border-radius:6px 0 0 6px;
+  }
+  .split-btn-main:hover { background:var(--bg-overlay); }
+  .split-btn-caret {
+    display:flex;align-items:center;padding:0 8px;
+    background:var(--bg-surface);border:none;border-left:1px solid var(--border);
+    color:var(--text-muted);cursor:pointer;border-radius:0 6px 6px 0;
+  }
+  .split-btn-caret:hover { background:var(--bg-overlay); }
+  .split-btn-dropdown {
+    display:none;position:absolute;top:100%;right:0;left:0;margin-top:4px;z-index:100;
+    background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.25);overflow:hidden;
+  }
+  .split-btn-dropdown.open { display:block; }
+  .split-btn-option {
+    display:flex;align-items:center;gap:8px;padding:8px 12px;width:100%;
+    background:none;border:none;border-bottom:1px solid var(--border);
+    color:var(--text-primary);font-size:13px;font-family:inherit;cursor:pointer;text-align:left;
+  }
+  .split-btn-option:last-child { border-bottom:none; }
+  .split-btn-option:hover { background:var(--bg-overlay); }
+  .split-btn-option .check-icon { width:16px;display:flex;align-items:center;justify-content:center; }
+
   /* ─── Sparkle icon ─── */
   .sparkle { display: inline; }
 
@@ -922,25 +953,53 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
 
           <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
             <!-- Cloud coding agent split button -->
-            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
-              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
-                Assign to Copilot
-              </button>
-              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
-              </button>
+            <div class="split-btn-wrapper">
+              <div class="split-btn">
+                <button class="split-btn-main" id="cloud-btn-s2">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+                  <span>Assign to Copilot</span>
+                </button>
+                <button class="split-btn-caret" onclick="toggleDropdown('cloud-dd-s2')">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+                </button>
+              </div>
+              <div class="split-btn-dropdown" id="cloud-dd-s2">
+                <button class="split-btn-option" onclick="pickOption('cloud-btn-s2','Assign to Copilot','cloud-dd-s2',this)">
+                  <span class="check-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg></span>
+                  Copilot
+                </button>
+                <button class="split-btn-option" onclick="pickOption('cloud-btn-s2','Assign to Claude','cloud-dd-s2',this)">
+                  <span class="check-icon"></span>
+                  Claude
+                </button>
+                <button class="split-btn-option" onclick="pickOption('cloud-btn-s2','Assign to Codex','cloud-dd-s2',this)">
+                  <span class="check-icon"></span>
+                  Codex
+                </button>
+              </div>
             </div>
 
             <!-- Local session split button -->
-            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
-              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75z"/></svg>
-                Start with Copilot CLI
-              </button>
-              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
-              </button>
+            <div class="split-btn-wrapper">
+              <div class="split-btn">
+                <button class="split-btn-main" id="local-btn-s2">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75z"/></svg>
+                  <span>Start with Copilot CLI</span>
+                </button>
+                <button class="split-btn-caret" onclick="toggleDropdown('local-dd-s2')">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+                </button>
+              </div>
+              <div class="split-btn-dropdown" id="local-dd-s2">
+                <button class="split-btn-option" onclick="pickOption('local-btn-s2','Start with Copilot CLI','local-dd-s2',this)">
+                  <span class="check-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg></span>
+                  Copilot CLI
+                </button>
+                <button class="split-btn-option" onclick="pickOption('local-btn-s2','Start with Claude Code','local-dd-s2',this)">
+                  <span class="check-icon"></span>
+                  Claude Code
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1130,25 +1189,53 @@ Add an **Expand All / Collapse All** toggle button in the table header area of p
 
           <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px;">
             <!-- Cloud coding agent split button -->
-            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
-              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
-                Assign to Copilot
-              </button>
-              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
-              </button>
+            <div class="split-btn-wrapper">
+              <div class="split-btn">
+                <button class="split-btn-main" id="cloud-btn-s3">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M8 0a8 8 0 110 16A8 8 0 018 0z"/></svg>
+                  <span>Assign to Copilot</span>
+                </button>
+                <button class="split-btn-caret" onclick="toggleDropdown('cloud-dd-s3')">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+                </button>
+              </div>
+              <div class="split-btn-dropdown" id="cloud-dd-s3">
+                <button class="split-btn-option" onclick="pickOption('cloud-btn-s3','Assign to Copilot','cloud-dd-s3',this)">
+                  <span class="check-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg></span>
+                  Copilot
+                </button>
+                <button class="split-btn-option" onclick="pickOption('cloud-btn-s3','Assign to Claude','cloud-dd-s3',this)">
+                  <span class="check-icon"></span>
+                  Claude
+                </button>
+                <button class="split-btn-option" onclick="pickOption('cloud-btn-s3','Assign to Codex','cloud-dd-s3',this)">
+                  <span class="check-icon"></span>
+                  Codex
+                </button>
+              </div>
             </div>
 
             <!-- Local session split button -->
-            <div style="display:flex;border:1px solid var(--border);border-radius:6px;overflow:hidden;">
-              <button style="flex:1;display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg-surface);border:none;color:var(--text-primary);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75z"/></svg>
-                Start with Copilot CLI
-              </button>
-              <button style="display:flex;align-items:center;padding:0 8px;background:var(--bg-surface);border:none;border-left:1px solid var(--border);color:var(--text-muted);cursor:pointer;">
-                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
-              </button>
+            <div class="split-btn-wrapper">
+              <div class="split-btn">
+                <button class="split-btn-main" id="local-btn-s3">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75z"/></svg>
+                  <span>Start with Copilot CLI</span>
+                </button>
+                <button class="split-btn-caret" onclick="toggleDropdown('local-dd-s3')">
+                  <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z"/></svg>
+                </button>
+              </div>
+              <div class="split-btn-dropdown" id="local-dd-s3">
+                <button class="split-btn-option" onclick="pickOption('local-btn-s3','Start with Copilot CLI','local-dd-s3',this)">
+                  <span class="check-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg></span>
+                  Copilot CLI
+                </button>
+                <button class="split-btn-option" onclick="pickOption('local-btn-s3','Start with Claude Code','local-dd-s3',this)">
+                  <span class="check-icon"></span>
+                  Claude Code
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1187,6 +1274,25 @@ function showPlan() {
   document.getElementById('sidebar-dev').style.display = 'block';
   document.getElementById('plan-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+function toggleDropdown(id) {
+  var dd = document.getElementById(id);
+  var isOpen = dd.classList.contains('open');
+  document.querySelectorAll('.split-btn-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+  if (!isOpen) dd.classList.add('open');
+}
+function pickOption(btnId, label, ddId, el) {
+  var btn = document.getElementById(btnId);
+  btn.querySelector('span').textContent = label;
+  var dd = document.getElementById(ddId);
+  dd.querySelectorAll('.check-icon').forEach(function(c) { c.innerHTML = ''; });
+  el.querySelector('.check-icon').innerHTML = '<svg width="14" height="14" viewBox="0 0 16 16" fill="var(--green)"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg>';
+  dd.classList.remove('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.split-btn-wrapper')) {
+    document.querySelectorAll('.split-btn-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+  }
+});
 function toggleTheme() {
   document.documentElement.classList.toggle('light');
   var isLight = document.documentElement.classList.contains('light');
